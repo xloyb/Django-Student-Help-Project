@@ -1,0 +1,16 @@
+# Ignore compiled Python files
+*.pyc
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+
+# Ignore system files
+__pycache__/
+.DS_Store
+
+# Ignore unimportant files within project-specific directories
+djangoenv/
+Student_Help/core/__pycache__/
+student_help/__pycache__/
+Student_Help/theme/__pycache__/
