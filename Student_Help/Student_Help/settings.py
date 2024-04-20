@@ -76,10 +76,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.tailwind_version',
             ],
         },
     },
 ]
+
+TAILWIND_VERSION = '1.0.0'  # Update this version number when you make changes to Tailwind CSS
+
 
 WSGI_APPLICATION = 'Student_Help.wsgi.application'
 
