@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from core.views import home,testDashboard,layout
+from core.views import home,testDashboard,layout,profile
 
 urlpatterns = [
     path('',home), # Default view when accessing root of site
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path('test/',testDashboard),
-     path('t/',layout)
+     path('t/',layout),
+     path('profile/',profile)
 
 ]

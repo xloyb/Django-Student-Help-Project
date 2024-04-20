@@ -10,3 +10,7 @@ def  testDashboard(request):
 
 def  layout(request):
     return render (request, 'layout.html')
+
+
+def  profile(request):
+    return render (request, 'pages/profile.html')
