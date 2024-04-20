@@ -6,3 +6,7 @@ def  home(request):
 
 def  testDashboard(request):
     return render (request, 'dashboard.html')
+
+
+def  layout(request):
+    return render (request, 'layout.html')
