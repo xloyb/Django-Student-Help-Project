@@ -54,7 +54,7 @@ class Stage(models.Model):
 
     def __str__(self):
         return self.typeStg+""+self.societe+""+self.duree+""+self.sujet+""+self.contactinfo+""+self.specialite
-# Reaction 
+# REACTION
 class Reaction(models.Model):
     commentaire = models.CharField(max_length=255)
     like = models.BooleanField(default=False)
