@@ -1,14 +1,17 @@
 from django.db import models
 from datetime import date
+from django.contrib.auth.models import User
+
 
 #USER
-class User (models.Model):
-    nom = models.CharField(max_length = 100)
-    prenom = models.CharField(max_length = 100)
-    email= models.EmailField()
-    telephone = models.CharField(max_length = 8)
-    def __str__(self) :
-        return self.nom+""+self.prenom+""+self.email+""+self.telephone
+# class User (models.Model):
+#     nom = models.CharField(max_length = 100)
+#     prenom = models.CharField(max_length = 100)
+#     email= models.EmailField()
+#     telephone = models.CharField(max_length = 8)
+#     def __str__(self) :
+#         return self.nom+""+self.prenom+""+self.email+""+self.telephone
+
 #EVENEMENT
 class Evenement (models.Model):
     intitule=models.CharField(max_length=255)
@@ -30,7 +33,7 @@ class Poste(models.Model):
     image = models.ImageField(blank=True)
     type = models.IntegerField(choices=TYPE_CHOICES)
     date = models.DateField()
-    usr=models.ForeignKey(User,on_delete=models.CASCADE,null=True )
+    usr=models.ForeignKey(User,default=None,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.type+""+self.date
@@ -59,7 +62,7 @@ class Stage(models.Model):
 class Reaction(models.Model):
     commentaire = models.CharField(max_length=255)
     like = models.BooleanField(default=False)
-    usr=models.ForeignKey(User,on_delete=models.CASCADE,null=True )
+    usr=models.ForeignKey(User,default=None,on_delete=models.CASCADE)
     pst=models.ForeignKey(Poste,on_delete=models.CASCADE,null=True )
     def __str__(self) :
         return self.commentaire+""+self.like

@@ -1,10 +1,11 @@
 {% load crispy_forms_tags %}
 
-<div class="navbar bg-base-100">
+<div class="navbar bg-base-100 border-slate-800	">
     <div class="flex-1">
       <a class="btn btn-ghost text-xl">MyStudent</a>
     </div>
-    
+    <a class="btn btn-neutral mx-1" href="{% url 'home' %}">Home</a>
+
     {% if user.is_authenticated %}             
     <div class="flex-none">
       <div class="dropdown dropdown-end">
@@ -51,9 +52,10 @@
       </div>
     </div>
     {% else %}
-    <a href="{% url 'register' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Create Account </a>
-    <a href="{% url 'login' %}" class="btn" style="color: white; background-color: #fd5e14; margin-left: 10px; "type="submit" id="header-links">Log In</a>
-  {% endif %}
+    <a class="btn btn-primary mx-1" href="{% url 'login' %}">Login</a>
+    <a class="btn btn-primary mx-1" href="{% url 'register' %}">Register</a>
+
+      {% endif %}
 
   </div>
   {% if messages %}

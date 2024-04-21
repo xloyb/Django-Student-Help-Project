@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_view
 from core.views import home,Dashboard,layout,profile,register,login
 
 urlpatterns = [
-    path('',home), # Default view when accessing root of site
+    path('',home, name='home'), # Default view when accessing root of site
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path('dashboard/',Dashboard, name='dashboard'),
