@@ -60,7 +60,7 @@ class Reaction(models.Model):
     like = models.BooleanField(default=False)
     def __str__(self) :
         return self.commentaire+""+self.like
-# Logement
+# LOGEMENT
 class Logement(models.Model):
     description = models.CharField(max_length=255)
     localisation =models.CharField(max_length=255)
