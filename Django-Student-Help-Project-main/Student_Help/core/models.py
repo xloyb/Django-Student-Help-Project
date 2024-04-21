@@ -68,7 +68,7 @@ class Logement(models.Model):
     def __str__(self):
         return self.description+""+self.localisation+""+self.contactinfo
 
-# Transport
+# TRANSPORT
 class Transport(models.Model):
     depart = models.CharField(max_length=255)
     destination =models.CharField(max_length=255)
