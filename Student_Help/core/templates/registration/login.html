@@ -1,4 +1,5 @@
 {% load static tailwind_tags %}
+{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,24 +22,11 @@
                 </a>
             </div>
             <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                <form class="card-body">
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Username</span>
-                        </label>
-                        <input type="text" placeholder="Username" name="username" class="input input-bordered" required>
-                    </div>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Password</span>
-                        </label>
-                        <input type="password" placeholder="Password" name="password" class="input input-bordered" required>
-                        <label class="label">
-                            <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
-                        </label>
-                    </div>
+                <form class="card-body" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
                     <div class="form-control mt-6">
-                        <!-- Error message will appear here -->
                         <button class="btn btn-primary">Login</button>
                     </div>
                 </form>
