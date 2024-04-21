@@ -1,7 +1,11 @@
+{% load crispy_forms_tags %}
+
 <div class="navbar bg-base-100">
     <div class="flex-1">
       <a class="btn btn-ghost text-xl">MyStudent</a>
     </div>
+    
+    {% if user.is_authenticated %}             
     <div class="flex-none">
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -30,16 +34,27 @@
         </div>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
           <li>
-            <a class="justify-between">
+            <a class="justify-between" href="{% url 'profile' %}">
               Profile
               <span class="badge">New</span>
             </a>
           </li>
           <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
+          <li>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" type="button" class="btn btn-dark">Logout</button>
+          </form>
+
+          </li>
         </ul>
       </div>
     </div>
+    {% else %}
+    <a href="{% url 'register' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Create Account </a>
+    <a href="{% url 'login' %}" class="btn" style="color: white; background-color: #fd5e14; margin-left: 10px; "type="submit" id="header-links">Log In</a>
+  {% endif %}
+
   </div>
   {% if messages %}
   {% for message in messages %}
