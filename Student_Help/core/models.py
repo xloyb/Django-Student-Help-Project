@@ -36,7 +36,7 @@ class Poste(models.Model):
     usr=models.ForeignKey(User,default=None,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.type+""+self.date
+        return f"{self.get_type_display()} - {self.date}"
 
 class Stage(models.Model):
     OUVRIER = 1
