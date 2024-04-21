@@ -1,0 +1,51 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <!-- Include Tailwind CSS -->
+    {% tailwind_css %}
+
+</head>
+
+<body class="flex">
+    <!-- Sidebar -->
+    <div class="h-screen w-64 bg-gray-800 text-white">
+        <!-- Sidebar Content -->
+        <div class="flex flex-col h-full justify-between">
+            <!-- Sidebar Logo/Title -->
+            <div class="py-4 px-6">
+                <!-- Your Logo or Title Here -->
+                Sidebar Logo/Title
+                
+
+            </div>
+            <!-- Sidebar Navigation Links -->
+            <div class="flex flex-col space-y-4">
+                <a href="#" class="py-2 px-6 bg-gray-700 hover:bg-gray-600">Link 1</a>
+                <a href="#" class="py-2 px-6 bg-gray-700 hover:bg-gray-600">Link 2</a>
+            </div>
+            <!-- Sidebar Footer -->
+            <div class="py-4 px-6">
+                <!-- Your Footer Content Here -->
+                Sidebar Footer
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 bg-gray-100 p-10">
+        <!-- Page Content -->
+        <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
+        <!-- Add your main content here -->
+        {% include 'components/sidebar.html' %}
+        
+        <!-- You can use flex, grid, or other layout techniques -->
+    </div>
+</body>
+
+</html>

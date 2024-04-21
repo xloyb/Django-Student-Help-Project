@@ -1,0 +1,74 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    {% tailwind_css %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container mx-auto mt-8 p-4 rounded-lg shadow-md">
+        <!-- Profile Header -->
+        <div class="flex-1 relative mb-6 h-32" style="background-image: url('https://via.placeholder.com/800x400'); background-size: cover; background-position: center; border-radius: 0.5rem;">
+            <div class="flex items-center justify-center h-full p-4">
+                <img src="https://via.placeholder.com/80" alt="Profile Picture" class="w-20 h-20 rounded-full border-4 border-white bg-white">
+            </div>
+        </div>
+
+        <!-- Profile Navbar -->
+        <div class="navbar bg-base-100">
+            <div class="navbar-start space-x-4">
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                    </ul>
+                </div>
+                <a href="#" class="text-blue-500 hover:underline"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-blue-500 hover:underline"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-blue-500 hover:underline"><i class="fas fa-xmark"></i></a>
+            </div>
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="#">Item 3</a></li>
+                </ul>
+            </div>
+            <div class="navbar-end">
+                <button class="btn btn-primary">Edit Profile</button>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div>
+            <h2 class="card-title">John Doe</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div className="p-4">
+
+        
+        {% include 'components/post.html' %}
+
+        {% include 'components/post.html' %}
+
+        {% include 'components/post.html' %}
+</div>
+
+    <div id="updateComponent" style="display: none;">
+        <!-- Update Component -->
+    </div>
+
+</body>
+</html>
