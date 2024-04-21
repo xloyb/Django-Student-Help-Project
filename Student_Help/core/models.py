@@ -30,7 +30,8 @@ class Poste(models.Model):
         (DEMANDE, 'Demande'),
     ]
 
-    image = models.ImageField(blank=True)
+    # image = models.ImageField(blank=True)
+    image = models.ImageField(upload_to='images/')
     type = models.IntegerField(choices=TYPE_CHOICES)
     date = models.DateField()
     usr=models.ForeignKey(User,default=None,on_delete=models.CASCADE)
