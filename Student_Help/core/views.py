@@ -14,3 +14,9 @@ def  layout(request):
 
 def  profile(request):
     return render (request, 'pages/profile.html')
+
+def  register(request):
+    return render (request, 'registration/register.html')
+
+def  login(request):
+    return render (request, 'registration/login.html')
