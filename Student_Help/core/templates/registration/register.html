@@ -1,3 +1,4 @@
+{% load crispy_forms_tags %}
 {% load static tailwind_tags %}
 
 <!DOCTYPE html>
@@ -24,39 +25,21 @@
                 </a>
             </div>
             <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                <form class="card-body" id="registerForm">
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Username</span>
-                        </label>
-                        <input type="text" placeholder="Username" name="username" class="input input-bordered" required>
-                    </div>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Email</span>
-                        </label>
-                        <input type="email" placeholder="Email" name="email" class="input input-bordered" required>
-                    </div>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Name</span>
-                        </label>
-                        <input type="text" placeholder="Name" name="name" class="input input-bordered" required>
-                    </div>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Password</span>
-                        </label>
-                        <input type="password" placeholder="Password" name="password" class="input input-bordered" required>
-                        <label class="label">
-                            <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
-                        </label>
-                    </div>
+               
+                {% block content %}
+                <form class="card-body" id="registerForm" method="post">
+                    
+                    {% csrf_token %}
+                    <fieldset>
+
+                        <!-- {{ form }} -->
+                        {{ form|crispy }}
+                    </fieldset>
                     <div class="form-control mt-6">
-                        <!-- Error message will appear here -->
                         <button type="submit" class="btn btn-primary">Register</button>
                     </div>
                 </form>
+                {% endblock %}
             </div>
         </div>
     </div>
