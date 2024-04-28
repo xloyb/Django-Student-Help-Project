@@ -11,14 +11,19 @@
       <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label> 
       <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
         <!-- Sidebar content here -->
-        <li><a>Sidebar Item 1</a></li>
-        <li><a>Sidebar Item 2</a></li>
-        
         <ul class="menu bg-base-200 w-56 rounded-box">
           <li>
-            <h2 class="menu-title">Dashboard</h2>
+            <h2 class="menu-title">Main</h2>
             <ul>
-              <li><span>Dashboard</span></li>
+              <a href="{% url 'home' %}"> 
+
+                <li><span>Home</span></li>
+              </a>
+              <a href="{% url 'dashboard' %}"> 
+
+                <li ><span>Dashboard</span></li>
+              </a>              
+
             </ul>
           </li>
         </ul>
