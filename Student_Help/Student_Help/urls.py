@@ -4,6 +4,8 @@ from django.contrib.auth import views as auth_view
 
 from core.views import home,Dashboard,layout,profile,register,login
 
+from core.views import PostListView
+
 urlpatterns = [
     path('',home, name='home'), # Default view when accessing root of site
     path('admin/', admin.site.urls),
@@ -15,5 +17,6 @@ urlpatterns = [
     #path('login/',login, name='login'),
     path('login/', auth_view.LoginView.as_view(template_name='registration/login.html'), name="login"),
     path('logout/', auth_view.LogoutView.as_view(template_name='registration/logout.html'), name="logout"),
-    
+    path('posts/', PostListView.as_view(), name='post_list'),
+
 ]

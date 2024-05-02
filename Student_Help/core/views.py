@@ -3,6 +3,15 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Poste
+
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 
 
 def  home(request):
@@ -35,3 +44,14 @@ def register(request):
 
 def  login(request):
     return render (request, 'registration/login.html')
+
+
+# def post_list(request):
+#     posts = Poste.objects.all()
+#     return render(request, 'components/posts.html', {'posts': posts})
+
+
+class PostListView(ListView):
+    model = Poste
+    template_name = 'components/posts.html'
+    context_object_name = 'posts'

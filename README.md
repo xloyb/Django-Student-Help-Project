@@ -20,6 +20,7 @@ Student Help
    │  │  │  ├─ card.html
    │  │  │  ├─ navbar.html
    │  │  │  ├─ post.html
+   │  │  │  ├─ posts.html
    │  │  │  └─ sidebar.html
    │  │  ├─ dashboard.html
    │  │  ├─ home.html
