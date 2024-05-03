@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
     "crispy_forms",
     "crispy_bootstrap5",
+    "Student_Help",
 
 
 ]
@@ -97,7 +98,7 @@ WSGI_APPLICATION = 'Student_Help.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(os.path.join(BASE_DIR, "blog.sqlite3")),
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3")),
     }
 }
 
