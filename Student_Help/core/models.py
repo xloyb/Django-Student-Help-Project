@@ -12,6 +12,8 @@ class Post(models.Model):
     type = models.IntegerField(choices=TYPE_CHOICES)
     title = models.CharField(max_length=255)
     description = models.TextField()
+    image = models.ImageField(blank=True, upload_to='post_images/')
+
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Logement(Post):

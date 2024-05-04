@@ -13,10 +13,12 @@ class BasePostForm(forms.ModelForm):
     type = forms.ChoiceField(choices=TYPE_CHOICES, label='Type')
     title = forms.CharField(label='Title', max_length=255, required=True)
     description = forms.CharField(label='Description', widget=forms.Textarea, required=True)
+    image = forms.ImageField(label='Image', required=False)
+
 
     class Meta:
         model = Post
-        fields = ('type', 'title', 'description')
+        fields = ('type', 'title', 'description','image')
 
 class LogementForm(BasePostForm):
     location = forms.CharField(label='Location', max_length=255, required=True)
