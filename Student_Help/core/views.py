@@ -10,55 +10,101 @@ from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm
 
 def create_post(request):
+    form_type = request.GET.get('type')  # Get the selected form type from the URL parameter
+
     if request.method == 'POST':
-        # Check for hidden form field indicating post type
-        if 'logement' in request.POST:
+        # Use form_type to determine which form to initialize
+        if form_type == 'logement':
             form = LogementForm(request.POST)
-        elif 'transport' in request.POST:
+        elif form_type == 'transport':
             form = TransportForm(request.POST)
-        elif 'stage' in request.POST:
+        elif form_type == 'stage':
             form = StageForm(request.POST)
-        elif 'evenement' in request.POST:
+        elif form_type == 'evenement':
             form = EvenementForm(request.POST)
-        elif 'recommandation' in request.POST:
+        elif form_type == 'recommandation':
             form = RecommandationForm(request.POST)
         else:
-            # Handle invalid or missing form type
             return render(request, 'components/create_post.html', {'error': 'Invalid form type'})
 
         if form.is_valid():
-            # Save the form data to the database (common for all types)
+            # Save the form data to the database
             post = form.save(commit=False)
-            post.creator = request.user  # Assuming user is authenticated
+            post.creator = request.user
             post.save()
 
             # Additional logic for specific post types (optional)
-            if isinstance(post, Logement):
-                # Do something specific for Logement posts
-                pass
-            elif isinstance(post, Transport):
-                # Do something specific for Transport posts
-                pass
-            elif isinstance(post, stage):
-                # Do something specific for Transport posts
-                pass
-            elif isinstance(post, evenement):
-                # Do something specific for Transport posts
-                pass
-            elif isinstance(post, recommandation):
-                # Do something specific for Transport posts
-                pass
-            return redirect('home')  #replace this with a notification in the headaer
+            # ...
+            return redirect('home')
         else:
             return render(request, 'components/create_post.html', {'form': form})
 
-    form_dict = {'logement': LogementForm(), 'transport': TransportForm(),
-                 'stage': StageForm(), 'evenement': EvenementForm(),
-                 'recommandation': RecommandationForm()}
-    form = form_dict.get(request.GET.get('type'))  # Allow GET param to pre-select form type (optional)
+    # Initialize the form based on the selected form type
+    form = {
+        'logement': LogementForm(),
+        'transport': TransportForm(),
+        'stage': StageForm(),
+        'evenement': EvenementForm(),
+        'recommandation': RecommandationForm()
+    }.get(form_type)
+
+    # If form_type is missing or invalid, handle it gracefully
     if not form:
-        form = "null"  # Set default form (optional)
+        return render(request, 'components/create_post.html', {'error': 'Please select a form type'})
+
     return render(request, 'components/create_post.html', {'form': form})
+
+
+# def create_post(request):
+#     if request.method == 'POST':
+#         # Check for hidden form field indicating post type
+#         if 'logement' in request.POST:
+#             form = LogementForm(request.POST)
+#         elif 'transport' in request.POST:
+#             form = TransportForm(request.POST)
+#         elif 'stage' in request.POST:
+#             form = StageForm(request.POST)
+#         elif 'evenement' in request.POST:
+#             form = EvenementForm(request.POST)
+#         elif 'recommandation' in request.POST:
+#             form = RecommandationForm(request.POST)
+#         else:
+#             # Handle invalid or missing form type
+#             return render(request, 'components/create_post.html', {'error': 'Invalid form type'})
+
+#         if form.is_valid():
+#             # Save the form data to the database (common for all types)
+#             post = form.save(commit=False)
+#             post.creator = request.user  # Assuming user is authenticated
+#             post.save()
+
+#             # Additional logic for specific post types (optional)
+#             if isinstance(post, Logement):
+#                 # Do something specific for Logement posts
+#                 pass
+#             elif isinstance(post, Transport):
+#                 # Do something specific for Transport posts
+#                 pass
+#             elif isinstance(post, stage):
+#                 # Do something specific for Transport posts
+#                 pass
+#             elif isinstance(post, evenement):
+#                 # Do something specific for Transport posts
+#                 pass
+#             elif isinstance(post, recommandation):
+#                 # Do something specific for Transport posts
+#                 pass
+#             return redirect('home')  #replace this with a notification in the headaer
+#         else:
+#             return render(request, 'components/create_post.html', {'form': form})
+
+#     form_dict = {'logement': LogementForm(), 'transport': TransportForm(),
+#                  'stage': StageForm(), 'evenement': EvenementForm(),
+#                  'recommandation': RecommandationForm()}
+#     form = form_dict.get(request.GET.get('type'))  # Allow GET param to pre-select form type (optional)
+#     if not form:
+#         form = "null"  # Set default form (optional)
+#     return render(request, 'components/create_post.html', {'form': form})
 
 
 def  home(request):
