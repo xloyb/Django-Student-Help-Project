@@ -26,13 +26,10 @@
     </form>
 
     <form method="post" novalidate>
-        {% csrf_token %}  <input type="hidden" name="logement" value="logement">
-        <input type="hidden" name="transport" value="transport">
-        <input type="hidden" name="stage" value="stage">
-        <input type="hidden" name="evenement" value="evenement">
-        <input type="hidden" name="recommandation" value="recommandation">
-
-        {{ form.as_p }}  <button type="submit">Create Post</button>
+        {% csrf_token %}
+        {{ form.management_form }}  <!-- Use management form for form management -->
+        {{ form.as_p }}
+        <button type="submit">Create Post</button>
     </form>
 </body>
 </html>
