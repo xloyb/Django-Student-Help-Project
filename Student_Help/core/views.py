@@ -9,6 +9,18 @@ from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, 
 from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm
 
+
+from django.views.generic import ListView
+
+class PostListView(ListView):
+    template_name = 'posts/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        # Combine all types of posts into a single queryset
+        return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').all()
+
+
 def create_post(request):
     form_type = request.GET.get('type')  # Get the selected form type from the URL parameter
 
