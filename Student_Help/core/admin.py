@@ -1,13 +1,12 @@
 from django.contrib import admin
-from .models import Reaction, Image, Post, Event, EvenClub, EvenSocial, Stage, Logement, Transport
+from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like
 
-# Register your models here
-admin.site.register(Reaction)
-admin.site.register(Image)
+# Register only the concrete post models with the admin site
 admin.site.register(Post)
-admin.site.register(Event)
-admin.site.register(EvenClub)
-admin.site.register(EvenSocial)
-admin.site.register(Stage)
 admin.site.register(Logement)
 admin.site.register(Transport)
+admin.site.register(Stage)
+admin.site.register(Evenement)
+admin.site.register(Recommandation)
+admin.site.register(Commentaire)
+admin.site.register(Like)

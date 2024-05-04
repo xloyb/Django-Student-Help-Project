@@ -1,0 +1,38 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+</head>
+<body>
+    <h1>Create a New Post</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="get">
+        <label for="type">Select Post Type:</label>
+        <select id="type" name="type">
+            <option value="logement">Logement</option>
+            <option value="transport">Transport</option>
+            <option value="stage">Stage</option>
+            <option value="evenement">Evenement</option>
+            <option value="recommandation">Recommendation</option>
+        </select>
+        <button type="submit">Select</button>
+    </form>
+
+    <form method="post" novalidate>
+        {% csrf_token %}  <input type="hidden" name="logement" value="logement">
+        <input type="hidden" name="transport" value="transport">
+        <input type="hidden" name="stage" value="stage">
+        <input type="hidden" name="evenement" value="evenement">
+        <input type="hidden" name="recommandation" value="recommandation">
+
+        {{ form.as_p }}  <button type="submit">Create Post</button>
+    </form>
+</body>
+</html>

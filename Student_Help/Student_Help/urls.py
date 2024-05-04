@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_view
 
-from core.views import home,Dashboard,layout,profile,register,login
+from core.views import home,Dashboard,layout,profile,register,login,create_post
 
 # from core.views import PostListView
 
@@ -18,5 +18,6 @@ urlpatterns = [
     path('login/', auth_view.LoginView.as_view(template_name='registration/login.html'), name="login"),
     path('logout/', auth_view.LogoutView.as_view(template_name='registration/logout.html'), name="logout"),
     # path('posts/', PostListView.as_view(), name='post_list'),
-
+    #path('api/',include('api.urls')),
+    path('test/',create_post),
 ]
