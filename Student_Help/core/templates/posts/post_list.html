@@ -1,51 +1,55 @@
-<!-- templates/posts/post_list.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>All Posts</title>
-</head>
-<body>
-    <h1>All Posts</h1>
-    <ul>
-    {% for post in posts %}
-        <li>
-            <h2>{{ post.title }}</h2>
-            <p>Type: {{ post.get_type_display }}</p>
-            {% if post.description %}
-                <p>Description: {{ post.description }}</p>
-            {% endif %}
-            {% if post.image %}
-                <img src="{{ post.image.url }}" alt="Post Image">
-            {% endif %}
-            {% if post.logement %}
-                <p>Location: {{ post.logement.location }}</p>
-            {% elif post.transport %}
-                <p>Departure: {{ post.transport.departure }}</p>
-                <p>Destination: {{ post.transport.destination }}</p>
-                <p>Departure Time: {{ post.transport.departureTime }}</p>
-            {% elif post.stage %}
-                <p>Type of Internship: {{ post.stage.get_typeInternship_display }}</p>
-                <p>Company: {{ post.stage.company }}</p>
-                <p>Duration: {{ post.stage.duration }} months</p>
-                <p>Subject: {{ post.stage.subject }}</p>
-            {% elif post.evenement %}
-                <p>Event Type: {{ post.evenement.get_eventType_display }}</p>
-                <p>Date: {{ post.evenement.date }}</p>
-                {% if post.evenement.club %}
-                    <p>Organizing Club: {{ post.evenement.club }}</p>
+{% load static %}
+
+<div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10">
+    <div class="card-body">
+        <div class="absolute top-4 right-4 h-12 w-24 px-4 py-2 rounded-lg">
+            <div class="dropdown dropdown-left">
+                <div tabindex="0" role="button" class="btn m-1">
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li>
+                        <a href="#" onclick="">Delete</a>
+                    </li>
+                    <li>
+                        <a href="#">Report</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <a href="#" style="text-decoration: none; color: inherit;">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 mb-3 avatar">
+                    <img alt="" class="rounded-full" src="{% static 'default/default_profile.png' %}">
+                </div>
+                <span class="card-title">{{ post.creator.username }}</span>
+                {% if post.new %}
+                    <div class="badge badge-secondary">NEW</div>
                 {% endif %}
-                {% if post.evenement.price %}
-                    <p>Ticket Price: {{ post.evenement.price }}</p>
-                {% endif %}
-                {% if post.evenement.domain %}
-                    <p>Subject Area: {{ post.evenement.domain }}</p>
-                {% endif %}
-            {% elif post.recommandation %}
-                <p>Recommendation: {{ post.recommandation.text }}</p>
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
-</body>
-</html>
+            </div>
+        </a>
+        <figure class="relative">
+            <img src="{{ post.image.url }}" alt="Post Image">
+            <div class="absolute bottom-0 right-0 p-4">
+                <div class="card-actions space-x-2">
+                    <i class="fas fa-heart text-red-500"></i>
+                    <i class="fas fa-comment text-blue-500"></i>
+                    <i class="fas fa-share text-indigo-500"></i>
+                </div>
+            </div>
+        </figure>
+        <p class="mt-2 text-base">{{ post.description }}</p>
+        <div class="mt-4 flex items-center space-x-2">
+            <i class="fas fa-heart text-red-500"></i>
+            <span> {{ post.likes }} </span>
+            <i class="fas fa-comment text-blue-500"></i>
+            <span> {{ post.comments_count }} </span>
+            <i class="fas fa-share text-indigo-500"></i>
+        </div>
+    </div>
+    <div>
+        <!-- Comments Component -->
+        <!-- Add your comments component here -->
+    </div>
+</div>
+
