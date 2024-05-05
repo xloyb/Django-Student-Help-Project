@@ -13,8 +13,8 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(blank=True, upload_to='post_images/')
-
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Logement(Post):
     location = models.CharField(max_length=255)
