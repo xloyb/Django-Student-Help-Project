@@ -15,6 +15,9 @@ class Post(models.Model):
     image = models.ImageField(blank=True, upload_to='post_images/')
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    def is_liked_by_user(self, user):
+        return self.likes.filter(user=user).exists()
+
 
 class Logement(Post):
     location = models.CharField(max_length=255)

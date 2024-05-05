@@ -17,6 +17,43 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def like_post(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        post_id = request.POST.get('post_id')
+        user = request.user
+        try:
+            like = Like.objects.get(user=user, post_id=post_id)
+            like.delete()
+            return JsonResponse({'success': True, 'action': 'unliked'})
+        except Like.DoesNotExist:
+            Like.objects.create(user=user, post_id=post_id)
+            return JsonResponse({'success': True, 'action': 'liked'})
+    return JsonResponse({'success': False})
+
+# def like_post(request):
+#     if request.method == 'POST':
+#         post_id = request.POST.get('post_id')
+#         post = get_object_or_404(Post, pk=post_id)
+#         user = request.user
+#         # Check if the user has already liked the post
+#         already_liked = Like.objects.filter(user=user, post=post).exists()
+#         if already_liked:
+#             # Unlike the post
+#             Like.objects.filter(user=user, post=post).delete()
+#         else:
+#             # Like the post
+#             Like.objects.create(user=user, post=post)
+#         # Get the updated like count for the post
+#         likes_count = post.likes.count()
+#         return JsonResponse({'success': True, 'likes_count': likes_count})
+#     else:
+#         return JsonResponse({'success': False})
+
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
@@ -127,14 +164,41 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     template_name = 'dashboard.html'
     context_object_name = 'posts'
 
     def get_queryset(self):
+        queryset = Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').order_by('-created_at')
+        user = self.request.user
+        for post in queryset:
+            post.is_liked = post.is_liked_by_user(user)
+        return queryset
 
-        #return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').all()
-        return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').order_by('-created_at')
+def get_liked_status(request, post_id):
+    if request.method == 'GET':
+        try:
+            post = Post.objects.get(pk=post_id)
+            user = request.user
+            if user.is_authenticated:
+                is_liked = post.is_liked_by_user(user)
+                return JsonResponse({'success': True, 'is_liked': is_liked})
+            else:
+                return JsonResponse({'success': False, 'error': 'User not authenticated'})
+        except Post.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Post not found'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+# class PostListView(ListView):
+#     template_name = 'dashboard.html'
+#     context_object_name = 'posts'
+
+#     def get_queryset(self):
+
+#         #return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').all()
+#         return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').order_by('-created_at')
 
 
 def create_post(request):
