@@ -10,10 +10,34 @@ from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm
 
 
-from django.views.generic import ListView
+from django.views.generic import ListView,DeleteView
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('dashboard')
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.creator == self.request.user:
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden("You are not allowed to delete this post.")
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.creator == self.request.user:
+            return super().delete(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden("You are not allowed to delete this post.")
+
+
 
 class PostListView(ListView):
-    template_name = 'posts/post_list.html'
+    template_name = 'dashboard.html'
     context_object_name = 'posts'
 
     def get_queryset(self):

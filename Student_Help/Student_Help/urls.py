@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_view
 
-from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView
+from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView
 from django.conf import settings
 from django.conf.urls.static import static
 # from core.views import PostListView
@@ -11,7 +11,7 @@ urlpatterns = [
     path('',home, name='home'), # Default view when accessing root of site
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
-    path('dashboard/',Dashboard, name='dashboard'),
+    #path('dashboar/',Dashboard, name='dashboard'),
     path('t/',layout),
     path('profile/',profile, name='profile'),
     path('register/',register, name='register'),
@@ -21,7 +21,9 @@ urlpatterns = [
     # path('posts/', PostListView.as_view(), name='post_list'),
     #path('api/',include('api.urls')),
     path('test/',create_post),
-    path('posts/', PostListView.as_view(), name='post_list'),
+    path('dashboard/', PostListView.as_view(), name='dashboard'),
+    path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

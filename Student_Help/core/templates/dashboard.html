@@ -1,4 +1,4 @@
-{% load static tailwind_tags %}
+{% load static tailwind_tags %} {% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,11 +27,147 @@
 
         <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
 
-        <div class="p-4">{% include 'components/post.html' %}</div>
-        <div class="p-4">{% include 'components/post.html' %}</div>
+        <div class="flex justify-end mr-8">
+          <div class="w-full max-w-xs">
+            <select id="postFilter" class="select select-success w-full">
+              <option disabled selected>Filter Posts</option>
+              <option value="all">All</option>
+              <option value="recommandation">Recommandation</option>
+              <option value="evenement">Evenement</option>
+              <option value="logement">Logement</option>
+              <option value="stage">Stage</option>
+            </select>
+          </div>
+        </div>
 
-        <div class="p-4">{% include 'components/posts.html' %}</div>
+        {% for post in posts %}
+        <div
+          class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10"
+          id="{% if post.recommandation %}recommandation{% elif post.evenement %}evenement{% elif post.stage %}stage{% elif post.transport %}transport{% elif post.logement %}logement{% endif %}"
+        >
+          <div class="card-body">
+            <div class="absolute top-4 right-4 h-12 w-24 px-4 py-2 rounded-lg">
+              <div class="dropdown dropdown-left">
+                <div tabindex="0" role="button" class="btn m-1">
+                  <i class="fas fa-ellipsis-v"></i>
+                </div>
+                <ul
+                  tabindex="0"
+                  class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li>
+                    {% if request.user == post.creator %}
+    <form action="{% url 'post_delete' post.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="">Delete Post</button>
+    </form>
+{% endif %}
+                  </li>
+                  <li>
+                    <a href="#">Report</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <a href="#" style="text-decoration: none; color: inherit">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 mb-3 avatar">
+                  <img
+                    alt=""
+                    class="rounded-full"
+                    src="https://www.mydevify.com/assets/index.494ac568.png"
+                  />
+                </div>
+                <span class="card-title">{{ post.creator.username }}</span>
+                <div class="badge badge-secondary">
+                  {{ post.get_type_display }}
+                </div>
+                <p class="text-gray-700 mb-2">
+                  Posted {{ post.created_at|timesince }} ago
+                </p>
+              </div>
+            </a>
+
+            {% if post.image %}
+            <figure class="relative">
+              <img src="{{ post.image.url }}" alt="Post Image" />
+            </figure>
+            {% endif %}
+            <h2 class="text-xl font-bold mb-2">{{ post.title }}</h2>
+            {% if post.description %}
+            <p class="mb-2 text-base">{{ post.description }}</p>
+            {% endif %} {% if post.logement %}
+            <p>Type: Logement</p>
+            <p>Location: {{ post.logement.location }}</p>
+            {% endif %} {% if post.transport %}
+            <p>Type: Transport</p>
+            <p>Departure: {{ post.transport.departure }}</p>
+            <p>Destination: {{ post.transport.destination }}</p>
+            <p>Departure Time: {{ post.transport.departureTime }}</p>
+            {% endif %} {% if post.stage %}
+            <p>Type: Stage</p>
+            <p>
+              Type of Internship: {{ post.stage.get_typeInternship_display }}
+            </p>
+            <p>Company: {{ post.stage.company }}</p>
+            <p>Duration: {{ post.stage.duration }} months</p>
+            <p>Subject: {{ post.stage.subject }}</p>
+            {% endif %} {% if post.evenement %}
+            <p>Type: Evenement</p>
+            <p>Event Type: {{ post.evenement.get_eventType_display }}</p>
+            <p>Date: {{ post.evenement.date }}</p>
+            {% if post.evenement.club %}
+            <p>Organizing Club: {{ post.evenement.club }}</p>
+            {% endif %} {% if post.evenement.price %}
+            <p>Ticket Price: {{ post.evenement.price }}</p>
+            {% endif %} {% if post.evenement.domain %}
+            <p>Subject Area: {{ post.evenement.domain }}</p>
+            {% endif %} {% endif %} {% if post.recommandation %}
+            <p>Type: Recommandation</p>
+            <p>Recommendation: {{ post.recommandation.text }}</p>
+            {% endif %}
+
+            <div class="mt-4 flex items-center space-x-2">
+              <i class="fas fa-heart text-red-500"></i>
+              <span> 42 </span>
+              <i class="fas fa-comment text-blue-500"></i>
+              <i class="fas fa-share text-indigo-500"></i>
+            </div>
+          </div>
+          <div>
+            <!-- Comments Component -->
+          </div>
+        </div>
+
+        {% endfor %}
       </div>
     </div>
+    <script>
+      document
+        .getElementById("postFilter")
+        .addEventListener("change", function () {
+          var selectedValue = this.value;
+          var allPosts = document.querySelectorAll(".card");
+
+          // Hide all posts
+          allPosts.forEach(function (post) {
+            post.style.display = "none";
+          });
+
+          // Show only the selected type of posts
+          if (selectedValue === "all") {
+            allPosts.forEach(function (post) {
+              post.style.display = "block";
+            });
+          } else {
+            var selectedPosts = document.querySelectorAll(
+              '.card[id="' + selectedValue + '"]'
+            );
+            selectedPosts.forEach(function (post) {
+              post.style.display = "block";
+            });
+          }
+        });
+    </script>
   </body>
 </html>
