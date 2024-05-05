@@ -17,8 +17,9 @@ class PostListView(ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        # Combine all types of posts into a single queryset
-        return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').all()
+
+        #return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').all()
+        return Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').order_by('-created_at')
 
 
 def create_post(request):
