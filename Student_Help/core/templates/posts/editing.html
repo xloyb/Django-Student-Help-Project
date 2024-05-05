@@ -1,33 +1,4 @@
-{% load static tailwind_tags %}
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <!-- Include Tailwind CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-
-    {% tailwind_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
-  </head>
-
-  <body class="container">
-    <!-- Sidebar -->
-    <div class="menu">{% include 'components/sidebar.html' %}</div>
-
-    <!-- Content -->
-    <div class="content">
-      <div class="home_container">
-        {% include 'components/navbar.html' %}
-
-        <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
-
-        {% for post in posts %}
+{% for post in posts %}
 <div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10">
     <div class="card-body">
         <div class="absolute top-4 right-4 h-12 w-24 px-4 py-2 rounded-lg">
@@ -48,7 +19,7 @@
         <a href="#" style="text-decoration: none; color: inherit;">
             <div class="flex items-center space-x-4">
                 <div class="w-10 mb-3 avatar">
-                    <img alt="" class="rounded-full" src="https://www.mydevify.com/assets/index.494ac568.png">
+                    <img alt="" class="rounded-full" src="http://example.com/default/default_profile.png">
                 </div>
                 <span class="card-title">{{ post.creator.username }}</span>
                 <div class="badge badge-secondary">{{ post.get_type_display }}</div>
@@ -116,8 +87,3 @@
 </div>
 
 {% endfor %}
-
-      </div>
-    </div>
-  </body>
-</html>
