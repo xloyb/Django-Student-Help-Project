@@ -10,11 +10,102 @@ from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm
 
 
-from django.views.generic import ListView,DeleteView
+from django.views.generic import ListView,DeleteView,UpdateView
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'posts/post_update.html'
+    success_url = reverse_lazy('dashboard')  
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        if hasattr(post, 'recommandation'):
+            return post.recommandation
+        elif hasattr(post, 'transport'):
+            return post.transport
+        elif hasattr(post, 'stage'):
+            return post.stage
+        elif hasattr(post, 'evenement'):
+            return post.evenement
+        elif hasattr(post, 'logement'):
+            return post.logement
+        else:
+            return None
+
+    def get_form_class(self):
+        post = self.object
+        if hasattr(post, 'recommandation'):
+            return RecommandationForm
+        elif hasattr(post, 'transport'):
+            return TransportForm
+        elif hasattr(post, 'stage'):
+            return StageForm
+        elif hasattr(post, 'evenement'):
+            return EvenementForm
+        elif hasattr(post, 'logement'):
+            return LogementForm
+        else:
+            return None
+
+
+    # def get_object(self, queryset=None):
+    #     post = super().get_object(queryset)
+    #     if post.recommandation:
+    #         return post.recommandation
+    #     elif post.transport:
+    #         return post.transport
+    #     elif post.stage:
+    #         return post.stage
+    #     elif post.evenement:
+    #         return post.evenement
+    #     elif post.logement:
+    #         return post.logement
+    #     else:
+    #         return None
+
+    # def get_form_class(self):
+    #     post = self.object
+    #     if post.recommandation:
+    #         return RecommandationForm
+    #     elif post.transport:
+    #         return TransportForm
+    #     elif post.stage:
+    #         return StageForm
+    #     elif post.evenement:
+    #         return EvenementForm
+    #     elif post.logement:
+    #         return LogementForm
+    #     else:
+    #         return None
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(creator=self.request.user)
+
+
+# class PostUpdateView(LoginRequiredMixin, UpdateView):
+#     model = Post
+#     fields = ['title', 'description', 'image']  # Specify the fields you want to allow users to edit
+#     success_url = reverse_lazy('dashboard')  # URL to redirect after successful update
+
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         if self.object.creator == self.request.user:
+#             return super().get(request, *args, **kwargs)
+#         else:
+#             return HttpResponseForbidden("You are not allowed to edit this post.")
+
+#     def form_valid(self, form):
+#         form.instance.creator = self.request.user  # Set the creator of the post to the current user
+#         return super().form_valid(form)
+
+
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post

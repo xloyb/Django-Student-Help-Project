@@ -1,4 +1,4 @@
-{% load static tailwind_tags %} {% load custom_filters %}
+{% load static tailwind_tags %} 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,11 +57,18 @@
                 >
                   <li>
                     {% if request.user == post.creator %}
-    <form action="{% url 'post_delete' post.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="">Delete Post</button>
-    </form>
-{% endif %}
+                    <form
+                      action="{% url 'post_delete' post.pk %}"
+                      method="post"
+                    >
+                      {% csrf_token %}
+                      <button type="submit" class="">Delete Post</button>
+                    </form>
+                    {% endif %}
+                  </li>
+                  <li>
+                    <a href="{% url 'post_update' pk=post.pk %}" class="">Edit</a>
+
                   </li>
                   <li>
                     <a href="#">Report</a>
