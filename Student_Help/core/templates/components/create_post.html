@@ -1,35 +1,57 @@
 {% load crispy_forms_tags %}
 
+{% load static tailwind_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    {% tailwind_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
 </head>
-<body>
-    <h1>Create a New Post</h1>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+<body class="container">
+    <!-- Sidebar -->
+    <div class="menu">{% include 'components/sidebar.html' %}</div>
 
-    <form method="get">
-        <label for="type">Select Post Type:</label>
-        <select id="type" name="type">
-            <option value="logement">Logement</option>
-            <option value="transport">Transport</option>
-            <option value="stage">Stage</option>
-            <option value="evenement">Evenement</option>
-            <option value="recommandation">Recommendation</option>
-        </select>
-        <button type="submit">Select</button>
-    </form>
+    <!-- Content -->
+    <div class="content">
+        <div class="home_container">
+            {% include 'components/navbar.html' %}
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {{ form.management_form }}  <!-- Use management form for form management -->
-        {{ form.as_p }}
-        <button type="submit">Create Post</button>
-    </form>
+            <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
+
+            <h1>Create a New Post</h1>
+
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+
+            <form method="get">
+                <label for="type">Select Post Type:</label>
+                <select id="type" name="type">
+                    <option value="logement">Logement</option>
+                    <option value="transport">Transport</option>
+                    <option value="stage">Stage</option>
+                    <option value="evenement">Evenement</option>
+                    <option value="recommandation">Recommendation</option>
+                </select>
+                <button type="submit">Select</button>
+            </form>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.management_form }}
+                {{ form.as_p }}
+                <button type="submit">Create Post</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>

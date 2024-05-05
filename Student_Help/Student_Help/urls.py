@@ -20,7 +20,7 @@ urlpatterns = [
     path('logout/', auth_view.LogoutView.as_view(template_name='registration/logout.html'), name="logout"),
     # path('posts/', PostListView.as_view(), name='post_list'),
     #path('api/',include('api.urls')),
-    path('test/',create_post),
+    path('newpost/',create_post,name='create_post'),
     path('dashboard/', PostListView.as_view(), name='dashboard'),
     path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
     #path('posts/<int:pk>/edit/', PostUpdateView.as_view(), name='post_edit'),
