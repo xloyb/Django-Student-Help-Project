@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like
 
 from django.shortcuts import render, redirect
-from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm
+from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm
 
 
 from django.views.generic import ListView,DeleteView,UpdateView
@@ -20,6 +20,24 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+
+
+from django.shortcuts import render, redirect
+from .forms import CommentForm
+
+def create_comment(request, post_id):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post_id = post_id
+            comment.save()
+            return redirect('dashboard')  
+    else:
+        form = CommentForm()
+    return render(request, 'comment_form.html', {'form': form})
+
 
 @csrf_exempt
 def like_post(request):
@@ -167,6 +185,8 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 class PostListView(LoginRequiredMixin, ListView):
     template_name = 'dashboard.html'
     context_object_name = 'posts'
+    form_class = CommentForm  
+
 
     def get_queryset(self):
         queryset = Post.objects.select_related('logement', 'transport', 'stage', 'evenement', 'recommandation').order_by('-created_at')
@@ -174,6 +194,10 @@ class PostListView(LoginRequiredMixin, ListView):
         for post in queryset:
             post.is_liked = post.is_liked_by_user(user)
         return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = self.form_class()  
+        return context
 
 def get_liked_status(request, post_id):
     if request.method == 'GET':

@@ -2,8 +2,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from .models import Post, Logement, Transport, Stage, Evenement, Recommandation
+from .models import Post, Logement, Transport, Stage, Evenement, Recommandation,Commentaire
 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Commentaire
+        fields = ['content']
+
+        
 class BasePostForm(forms.ModelForm):
     TYPE_CHOICES = (
         (0, 'Offer'),
