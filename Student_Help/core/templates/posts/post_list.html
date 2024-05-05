@@ -1,4 +1,4 @@
-{% load static tailwind_tags %}
+{% load static tailwind_tags %} {% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +27,24 @@
 
         <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
 
+        <div class="flex justify-end mr-8">
+          <div class="w-full max-w-xs">
+            <select id="postFilter" class="select select-success w-full">
+              <option disabled selected>Filter Posts</option>
+              <option value="all">All</option>
+              <option value="recommandation">Recommandation</option>
+              <option value="evenement">Evenement</option>
+              <option value="logement">Logement</option>
+              <option value="stage">Stage</option>
+            </select>
+          </div>
+        </div>
+
         {% for post in posts %}
-        <div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10">
+        <div
+          class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10"
+          id="{% if post.recommandation %}recommandation{% elif post.evenement %}evenement{% elif post.stage %}stage{% elif post.transport %}transport{% elif post.logement %}logement{% endif %}"
+        >
           <div class="card-body">
             <div class="absolute top-4 right-4 h-12 w-24 px-4 py-2 rounded-lg">
               <div class="dropdown dropdown-left">
@@ -60,9 +76,10 @@
                 <span class="card-title">{{ post.creator.username }}</span>
                 <div class="badge badge-secondary">
                   {{ post.get_type_display }}
-                  
                 </div>
-                <p class="text-gray-700 mb-2">Posted {{ post.created_at|timesince }} ago</p> 
+                <p class="text-gray-700 mb-2">
+                  Posted {{ post.created_at|timesince }} ago
+                </p>
               </div>
             </a>
 
@@ -120,5 +137,32 @@
         {% endfor %}
       </div>
     </div>
+    <script>
+      document
+        .getElementById("postFilter")
+        .addEventListener("change", function () {
+          var selectedValue = this.value;
+          var allPosts = document.querySelectorAll(".card");
+
+          // Hide all posts
+          allPosts.forEach(function (post) {
+            post.style.display = "none";
+          });
+
+          // Show only the selected type of posts
+          if (selectedValue === "all") {
+            allPosts.forEach(function (post) {
+              post.style.display = "block";
+            });
+          } else {
+            var selectedPosts = document.querySelectorAll(
+              '.card[id="' + selectedValue + '"]'
+            );
+            selectedPosts.forEach(function (post) {
+              post.style.display = "block";
+            });
+          }
+        });
+    </script>
   </body>
 </html>
