@@ -29,9 +29,5 @@ urlpatterns = [
     path('get-liked-status/<int:post_id>/', get_liked_status, name='get_liked_status'),
     path('post/<int:post_id>/comment/', create_comment, name='create_comment'),
 
-
-
-
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

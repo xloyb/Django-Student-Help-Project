@@ -35,7 +35,7 @@ def create_comment(request, post_id):
             comment.save()
             return redirect('dashboard')  
     else:
-        form = CommentForm()
+        form = CommentForm()  
     return render(request, 'comment_form.html', {'form': form})
 
 
@@ -251,7 +251,7 @@ def create_post(request):
 
             # Additional logic for specific post types (optional)
             # ...
-            return redirect('home')
+            return redirect('dashboard')
         else:
             return render(request, 'components/create_post.html', {'form': form})
 

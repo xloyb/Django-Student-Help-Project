@@ -72,6 +72,7 @@
                 <img alt="" class="rounded-full" src="https://www.mydevify.com/assets/index.494ac568.png" />
               </div>
               <span class="card-title">{{ post.creator.username }}</span>
+
               <div class="badge badge-secondary">
                 {{ post.get_type_display }}
               </div>
@@ -126,26 +127,17 @@
           </button>
 
             
-            <span class="like-count" data-post="{{ post.pk }}">xx</span>
-            <i class="fas fa-comment text-blue-500"></i>
+            <span class="like-count" data-post="{{ post.pk }}"></span>
+            <i class="fas fa-comment text-blue-500 cursor-pointer" onclick="toggleCollapse('{{ post.id }}')"></i>
             <i class="fas fa-share text-indigo-500"></i>
           </div>
 
         </div>
         <div>
-          
 
-
-          <div tabindex="0" class="collapse border border-base-300 bg-base-200"> 
-            <div class="collapse-title text-xl font-medium">
-              Comments Dropdown (Beta)
-            </div>
-            <div class="collapse-content"> 
-              {% include 'components/comment.html' %}
-              
-            </div>
+          <div id="CommentsSection-{{ post.id }}" style="display: none;">
+            {% include 'components/comment.html' %}
           </div>
-
           
           
         </div>
@@ -279,6 +271,17 @@
             });
     });
       });
+</script>
+
+<script>
+  function toggleCollapse(id) {
+    var content = document.getElementById("CommentsSection-"+id);
+    if (content.style.display === "none") {
+      content.style.display = "block";
+    } else {
+      content.style.display = "none";
+    }
+  }
 </script>
 
 

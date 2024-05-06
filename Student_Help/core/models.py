@@ -39,7 +39,8 @@ class Stage(Post):
     duration = models.IntegerField()
     subject = models.CharField(max_length=255)
 
-class Evenement(Post):
+
+class Evenement(Post):  
     TYPE_EVENT_CHOICES = (
         (0, 'Cultural'),
         (1, 'Scientific'),
