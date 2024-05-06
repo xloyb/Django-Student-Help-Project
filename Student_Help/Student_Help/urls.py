@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_view
 
-from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView
+from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications
 from django.conf import settings
 from django.conf.urls.static import static
 # from core.views import PostListView
@@ -29,6 +29,9 @@ urlpatterns = [
     path('get-liked-status/<int:post_id>/', get_liked_status, name='get_liked_status'),
     path('post/<int:post_id>/comment/', create_comment, name='create_comment'),
     path('post/<int:pk>/comment/<int:comment_id>/', PostWithCommentDetailView.as_view(), name='post_with_comment'),
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
+    path('fetch-notifications/', fetch_notifications, name='fetch_notifications'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -26,6 +26,18 @@ from django.shortcuts import render, redirect
 from .forms import CommentForm
 
 
+
+from django.urls import reverse
+
+def fetch_notifications(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user)
+        notifications_data = [{'message': notification.message, 'link': notification.link} for notification in notifications]
+        return JsonResponse({'notifications': notifications_data})
+    else:
+        return JsonResponse({'error': 'User not authenticated'})
+
+
 class PostDetailView(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'  
