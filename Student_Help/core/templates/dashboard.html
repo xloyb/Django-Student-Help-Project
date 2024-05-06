@@ -25,8 +25,8 @@
 
       <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
 
-      <div class="flex justify-end mr-8">
-        <div class="w-full max-w-xs">
+      <div class="flex justify-end sm:justify-start md:justify-center lg:justify-end mr-8">
+        <div class="w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-xs">
           <select id="postFilter" class="select select-success w-full">
             <option disabled selected>Filter Posts</option>
             <option value="all">All</option>
@@ -37,6 +37,7 @@
           </select>
         </div>
       </div>
+      
 
       {% for post in posts %}
       <div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10"
