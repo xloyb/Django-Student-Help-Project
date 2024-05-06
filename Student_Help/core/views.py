@@ -4,13 +4,13 @@ from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like
+from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification
 
 from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm
 
 
-from django.views.generic import ListView,DeleteView,UpdateView
+from django.views.generic import ListView,DeleteView,UpdateView,DetailView
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,49 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from .forms import CommentForm
 
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'  
+    context_object_name = 'post'
+
+
+class PostWithCommentDetailView(DetailView):
+    model = Post
+    template_name = 'components/postwithcomment.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comment_id = self.kwargs.get('comment_id')
+        context['comment'] = Commentaire.objects.get(id=comment_id)
+        return context
+
+
+
+# class PostWithCommentDetailView(DetailView):
+#     model = Commentaire
+#     template_name = 'components/post.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         post_id = self.kwargs.get('post_id')
+#         comment_id = self.kwargs.get('comment_id')
+#         comment = Commentaire.objects.get(id=comment_id)
+#         context['post'] = comment.post
+#         context['comment'] = comment
+#         return context
+
+# def create_comment(request, post_id):
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.author = request.user
+#             comment.post_id = post_id
+#             comment.save()
+#             return redirect('dashboard')  
+
+
 def create_comment(request, post_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -33,10 +76,25 @@ def create_comment(request, post_id):
             comment.author = request.user
             comment.post_id = post_id
             comment.save()
-            return redirect('dashboard')  
-    else:
-        form = CommentForm()  
-    return render(request, 'comment_form.html', {'form': form})
+            cid = comment.id
+            post = Post.objects.get(pk=post_id)
+            commenter = request.user
+            message = f"{commenter.username} commented on your post: {comment.content}"
+            create_notification_for_comment(post, commenter, message,cid)
+            
+            return redirect('dashboard')
+
+def create_notification_for_Like(post, commenter, message):
+    Notification.objects.create(
+        user=post.creator, 
+        message=message, 
+        link=f"/post/{post.id}/"
+    )
+
+def create_notification_for_comment(post, commenter,message,cid):
+    #if commenter != post.creator:  # Disabled for now 
+        Notification.objects.create(user=post.creator, message=message, link=f"/post/{post.id}/comment/{cid}")
+
 
 
 @csrf_exempt
@@ -50,8 +108,28 @@ def like_post(request):
             return JsonResponse({'success': True, 'action': 'unliked'})
         except Like.DoesNotExist:
             Like.objects.create(user=user, post_id=post_id)
+            post = Post.objects.get(id=post_id)
+            create_notification_for_Like(post, user, f"{user.username} liked your post.")
             return JsonResponse({'success': True, 'action': 'liked'})
     return JsonResponse({'success': False})
+
+# @csrf_exempt
+# def like_post(request):
+#     if request.method == 'POST' and request.user.is_authenticated:
+#         post_id = request.POST.get('post_id')
+#         user = request.user        
+#         try:
+#             like = Like.objects.get(user=user, post_id=post_id)
+#             like.delete()
+            
+
+
+#             return JsonResponse({'success': True, 'action': 'unliked'})
+#         except Like.DoesNotExist:
+#             Like.objects.create(user=user, post_id=post_id)
+
+#             return JsonResponse({'success': True, 'action': 'liked'})
+#     return JsonResponse({'success': False})
 
 # def like_post(request):
 #     if request.method == 'POST':

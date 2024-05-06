@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like
+from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification
 
 # Register only the concrete post models with the admin site
 admin.site.register(Post)
@@ -10,3 +10,5 @@ admin.site.register(Evenement)
 admin.site.register(Recommandation)
 admin.site.register(Commentaire)
 admin.site.register(Like)
+admin.site.register(Notification)
+
