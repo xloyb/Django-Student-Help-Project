@@ -9,27 +9,28 @@
       <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
         <!-- Sidebar content here -->
         <ul class="menu bg-base-200 w-56 rounded-box">
-
+          {% if user.is_staff %}
           <li>
             <h2 class="menu-title">Moderator</h2>
             <ul>
               <a href="{% url 'modcp_dashboard' %}"> 
-
+                
                 <li><span>Moderator Control Panel</span></li>
               </a>
               <a href="{% url 'modcp_reports' %}"> 
-
+                
                 <li ><span>Reports</span></li>
               </a> 
               
               <a href="{% url 'modcp_users' %}"> 
-
+                
                 <li ><span>Students List</span></li>
               </a>  
-
+              
             </ul>
           </li>
-
+          {% endif %}
+          
           <li>
             <h2 class="menu-title">Main</h2>
             <ul>
