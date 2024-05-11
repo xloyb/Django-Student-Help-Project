@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Post</title>
+    <title>ModCP </title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -28,7 +28,6 @@
 
         <div class="overflow-x-auto">
             <table class="table">
-              <!-- head -->
               <thead>
                 <tr>
                   <th>Post Title</th>
@@ -48,7 +47,9 @@
                   <td>{{ report.description }}</td>
                   <td>{{ report.get_status_display }}</td>
                   <th>
-                    <button class="btn btn-ghost btn-xs">Details</button>
+                    <button class="btn btn-ghost btn-xs mr-2">View Post</button>
+                    <button class="btn btn-ghost btn-xs">Action</button>
+
                   </th>
                 </tr>
                 {% empty %}
@@ -59,6 +60,9 @@
               </tbody>
             </table>
           </div>
+
+
+          
           
 
        

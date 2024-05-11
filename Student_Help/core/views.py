@@ -4,7 +4,7 @@ from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report
+from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report,User
 
 from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm
@@ -31,9 +31,10 @@ from django.urls import reverse
 import json
 
 
-def reported_posts(request):
-    reports = Report.objects.all()  # Query all reported posts
-    return render(request, 'components/reported_posts.html', {'reports': reports})
+def modcp_dashboard(request):
+    users = User.objects.all()  
+    reports = Report.objects.all()  
+    return render(request, 'modcp/dashboard.html', {'users': users, 'reports': reports})
 
 
 def report_post(request, post_id):
