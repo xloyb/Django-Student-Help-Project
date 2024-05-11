@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report,User
 
 from django.shortcuts import render, redirect
-from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm
+from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm, ReportStatusForm
 
 
 from django.views.generic import ListView,DeleteView,UpdateView,DetailView,View
@@ -31,11 +31,19 @@ from django.urls import reverse
 import json
 
 
+def update_report_status(request, report_id):
+    report = Report.objects.get(id=report_id)
+    if request.method == 'POST':
+        form = ReportStatusForm(request.POST, instance=report)
+        if form.is_valid():
+            form.save()
+            return redirect('modcp_dashboard')
+    
 def modcp_dashboard(request):
     users = User.objects.all()  
     reports = Report.objects.all()  
-    return render(request, 'modcp/dashboard.html', {'users': users, 'reports': reports})
-
+    form = ReportStatusForm()  
+    return render(request, 'modcp/dashboard.html', {'users': users, 'reports': reports, 'form': form})
 
 def report_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)

@@ -45,11 +45,32 @@
                   <td>{{ report.reporter.username }}</td>
                   <td>{{ report.get_reason_display }}</td>
                   <td>{{ report.description }}</td>
-                  <td>{{ report.get_status_display }}</td>
-                  <th>
-                    <button class="btn btn-ghost btn-xs mr-2">View Post</button>
-                    <button class="btn btn-ghost btn-xs">Action</button>
-
+                  <td>
+                    {% if report.status == 'pending' %}
+                    <div class="badge badge-outline">Pending</div>
+                    {% elif report.status == 'resolved' %}
+                    <div class="badge badge-accent badge-outline">Resolved</div>
+                    {% elif report.status == 'dismissed' %}
+                    <div class="badge badge-secondary badge-outline">Dismissed</div>
+                    {% endif %}
+                </td>                  <th>
+                    <a class="btn btn-ghost btn-xs mr-2" target="_blank" href="/post/{{ report.post.id }}/" >View Post</a>
+                    <button onclick="document.getElementById('my_modal_{{report.pk}}').showModal()" class="btn btn-ghost btn-xs">Action</button>
+                  
+                  <dialog id="my_modal_{{report.pk}}" class="modal">
+                    <div class="modal-box">
+                      <h3 class="font-bold text-lg">Update Report's Status</h3>
+                      <div class="modal-action">
+                        <form method="post" action="{% url 'update_report_status' report.id %}">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                          <button type="submit">Update Status</button>
+                        <form method="dialog">
+                          <button class="btn">Close</button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
                   </th>
                 </tr>
                 {% empty %}

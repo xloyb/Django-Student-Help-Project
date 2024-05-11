@@ -5,6 +5,14 @@ from django import forms
 from .models import Post, Logement, Transport, Stage, Evenement, Recommandation,Commentaire,Report
 
 
+class ReportStatusForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(choices=Report.STATUS_CHOICES)
+        }
+
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
