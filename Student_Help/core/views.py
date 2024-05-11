@@ -30,7 +30,10 @@ from .forms import CommentForm
 from django.urls import reverse
 import json
 
+from .decorators import staff_required
 
+
+@staff_required
 def user_update(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     
@@ -44,7 +47,7 @@ def user_update(request, user_id):
     
     return render(request, 'modcp/update_user.html', {'form': form, 'user': user})
 
-
+@staff_required
 def update_report_status(request, report_id):
     report = Report.objects.get(id=report_id)
     if request.method == 'POST':
@@ -52,19 +55,21 @@ def update_report_status(request, report_id):
         if form.is_valid():
             form.save()
             return redirect('modcp_reports')
-
+            
+@staff_required
 def modcp_reports(request):
     reports = Report.objects.all()  
     form = ReportStatusForm()  
     return render(request, 'modcp/reports.html', {'reports': reports, 'form': form})
 
+@staff_required
 def modcp_dashboard(request):
     users = User.objects.all()  
     reports = Report.objects.all()  
     form = ReportStatusForm()  
     return render(request, 'modcp/dashboard.html', {'users': users, 'reports': reports, 'form': form})
 
-
+@staff_required
 def modcp_users(request):
     users = User.objects.all()  
     form = UserRegisterForm()  
