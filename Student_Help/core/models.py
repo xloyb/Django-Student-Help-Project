@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
+
 
 class Post(models.Model):
     TYPE_CHOICES = (
@@ -75,3 +77,31 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.message}"
+
+class Report(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('resolved', 'Resolved'),
+        ('dismissed', 'Dismissed'),
+    )
+
+    REASON_CHOICES = (
+        ('spam', 'Spam'),
+        ('inappropriate', 'Inappropriate Content'),
+        ('abuse', 'Abuse'),
+        ('other', 'Other'),
+    )
+
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=20, choices=REASON_CHOICES)
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = 'Report'
+        verbose_name_plural = 'Reports'
+
+    def __str__(self):
+        return f"{self.reporter.username} reported {self.post.title} for {self.reason}"
