@@ -30,7 +30,7 @@
 				  <li><a>Item 3</a></li>
 				</ul>
 			  </div>
-			  <a class="btn btn-ghost text-xl">MyStudent</a>
+			  <a class="btn btn-ghost text-xl" href="/">MyStudent</a>
 			</div>
 			<div class="navbar-center hidden lg:flex">
 			  <ul class="menu menu-horizontal px-1">
@@ -48,8 +48,15 @@
 			  </ul>
 			</div>
 			<div class="navbar-end">
-			  <a class="btn">Button</a>
+				{% if user.is_authenticated %} 
+				<a class="btn mr-2 btn-primary" href="/dashboard/">Dashboard</a>
+				{% else %}
+				<a class="btn mr-2 btn-primary" href="/login/">Login</a>
+				<a class="btn btn-primary" href="/register/">Register</a>
+
+			  {% endif %}
 			</div>
+			
 		  </div>
 
 		  <div class="hero min-h-screen bg-base-200">

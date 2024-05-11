@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_view
 
-from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications
+from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications,report_post, reported_posts
 from django.conf import settings
 from django.conf.urls.static import static
 # from core.views import PostListView
@@ -31,6 +31,9 @@ urlpatterns = [
     path('post/<int:pk>/comment/<int:comment_id>/', PostWithCommentDetailView.as_view(), name='post_with_comment'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
     path('fetch-notifications/', fetch_notifications, name='fetch_notifications'),
+    path('report-post/<int:post_id>/', report_post, name='report_post'),
+    path('reported-posts/', reported_posts, name='reported_posts'),
+
 
 
 
