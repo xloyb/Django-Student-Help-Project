@@ -4,13 +4,13 @@ from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification
+from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report
 
 from django.shortcuts import render, redirect
-from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm
+from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm
 
 
-from django.views.generic import ListView,DeleteView,UpdateView,DetailView
+from django.views.generic import ListView,DeleteView,UpdateView,DetailView,View
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,7 +28,31 @@ from .forms import CommentForm
 
 
 from django.urls import reverse
+import json
 
+
+def reported_posts(request):
+    reports = Report.objects.all()  # Query all reported posts
+    return render(request, 'components/reported_posts.html', {'reports': reports})
+
+
+def report_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            reason = form.cleaned_data['reason']
+            description = form.cleaned_data['description']
+            # Set the reporter to the current authenticated user
+            report = form.save(commit=False)
+            report.post = post
+            report.reporter = request.user
+            report.save()
+            return redirect('dashboard')
+
+
+    
 def fetch_notifications(request):
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(user=request.user)
@@ -287,6 +311,8 @@ class PostListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = self.form_class()  
+        context['report_form'] = ReportForm()  
+
         return context
 
 def get_liked_status(request, post_id):
