@@ -2,9 +2,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from .models import Post, Logement, Transport, Stage, Evenement, Recommandation,Commentaire
+from .models import Post, Logement, Transport, Stage, Evenement, Recommandation,Commentaire,Report
 
 
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason', 'description']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        self.fields['reason'].widget = forms.Select(choices=Report.REASON_CHOICES)
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Commentaire
