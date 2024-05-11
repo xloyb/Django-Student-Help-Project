@@ -1,10 +1,119 @@
+{% load static tailwind_tags %}
+
 <!DOCTYPE html>
-<html>
-<head>
-    <title>{{ post.title }}</title>
-</head>
-<body>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.description }}</p>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ post.title }} </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    {% tailwind_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+  </head>
+
+  <body class="container">
+    <!-- Sidebar -->
+    <div class="menu">{% include 'components/sidebar.html' %}</div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="home_container">
+        {% include 'components/navbar.html' %}
+<div class="content_container">
+  
+  
+    <dialog id="my_modal_{{post.pk}}" class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg">Report {{post.creator.username}}'s Post</h3>
+          <div class="modal-action">
+            <form method="post" action="{% url 'report_post' post_id=post.id %}">
+              {% csrf_token %}
+              {{ report_form.as_p }}
+              <button type="submit">Submit Report</button>
+          </form>
+          
+            
+            <form method="dialog">
+              <button class="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      <div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10"
+        id="{% if post.recommandation %}recommandation{% elif post.evenement %}evenement{% elif post.stage %}stage{% elif post.transport %}transport{% elif post.logement %}logement{% endif %}">
+        <div class="card-body">
+         
+          <a href="#" style="text-decoration: none; color: inherit">
+            <div class="flex items-center space-x-4">
+              <div class="w-10 mb-3 avatar">
+                <img alt="" class="rounded-full" src="https://www.mydevify.com/assets/index.494ac568.png" />
+              </div>
+              <span class="card-title">{{ post.creator.username }}</span>
+              <div class="badge badge-secondary">
+                {{ post.get_type_display }}
+              </div>
+              <p class="text-gray-700 mb-2">
+                Posted {{ post.created_at|timesince }} ago
+              </p>
+            </div>
+          </a>
+
+          {% if post.image %}
+          <figure class="relative">
+            <img src="{{ post.image.url }}" alt="Post Image" />
+          </figure>
+          {% endif %}
+          <h2 class="text-xl font-bold mb-2">{{ post.title }}</h2>
+          {% if post.description %}
+          <p class="mb-2 text-base">{{ post.description }}</p>
+          {% endif %} {% if post.logement %}
+          <p>Type: Logement</p>
+          <p>Location: {{ post.logement.location }}</p>
+          {% endif %} {% if post.transport %}
+          <p>Type: Transport</p>
+          <p>Departure: {{ post.transport.departure }}</p>
+          <p>Destination: {{ post.transport.destination }}</p>
+          <p>Departure Time: {{ post.transport.departureTime }}</p>
+          {% endif %} {% if post.stage %}
+          <p>Type: Stage</p>
+          <p>
+            Type of Internship: {{ post.stage.get_typeInternship_display }}
+          </p>
+          <p>Company: {{ post.stage.company }}</p>
+          <p>Duration: {{ post.stage.duration }} months</p>
+          <p>Subject: {{ post.stage.subject }}</p>
+          {% endif %} {% if post.evenement %}
+          <p>Type: Evenement</p>
+          <p>Event Type: {{ post.evenement.get_eventType_display }}</p>
+          <p>Date: {{ post.evenement.date }}</p>
+          {% if post.evenement.club %}
+          <p>Organizing Club: {{ post.evenement.club }}</p>
+          {% endif %} {% if post.evenement.price %}
+          <p>Ticket Price: {{ post.evenement.price }}</p>
+          {% endif %} {% if post.evenement.domain %}
+          <p>Subject Area: {{ post.evenement.domain }}</p>
+          {% endif %} {% endif %} {% if post.recommandation %}
+          <p>Type: Recommandation</p>
+          <p>Recommendation: {{ post.recommandation.text }}</p>
+          {% endif %}
+
+
+        </div>
+        <div>
+
+         
+          
+          
+        </div>
+      </div>
+
+
+</div>
+      </div>
+    </div>
+  </body>
 </html>
