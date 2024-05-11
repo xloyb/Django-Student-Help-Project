@@ -1,0 +1,87 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    {% tailwind_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+  </head>
+
+  <body class="container">
+    <!-- Sidebar -->
+    <div class="menu">{% include 'components/sidebar.html' %}</div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="home_container">
+        {% include 'components/navbar.html' %}
+
+        <h1 class="text-2xl font-bold mb-4">Reports List</h1>
+
+        <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Post Title</th>
+                  <th>Reported By</th>
+                  <th>Reason</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for report in reports %}
+                <tr>
+                  <td>{{ report.post.title }}</td>
+                  <td>{{ report.reporter.username }}</td>
+                  <td>{{ report.get_reason_display }}</td>
+                  <td>{{ report.description }}</td>
+                  <td>
+                    {% if report.status == 'pending' %}
+                    <div class="badge badge-outline">Pending</div>
+                    {% elif report.status == 'resolved' %}
+                    <div class="badge badge-accent badge-outline">Resolved</div>
+                    {% elif report.status == 'dismissed' %}
+                    <div class="badge badge-secondary badge-outline">Dismissed</div>
+                    {% endif %}
+                </td>                  <th>
+                    <a class="btn btn-ghost btn-xs mr-2" target="_blank" href="/post/{{ report.post.id }}/" >View Post</a>
+                    <button onclick="document.getElementById('my_modal_{{report.pk}}').showModal()" class="btn btn-ghost btn-xs">Action</button>
+                  
+                  <dialog id="my_modal_{{report.pk}}" class="modal">
+                    <div class="modal-box">
+                      <h3 class="font-bold text-lg">Update Report's Status</h3>
+                      <div class="modal-action">
+                        <form method="post" action="{% url 'update_report_status' report.id %}">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                          <button type="submit">Update Status</button>
+                        <form method="dialog">
+                          <button class="btn">Close</button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
+                  </th>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="7">No reported posts</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

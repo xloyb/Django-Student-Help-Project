@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_view
 
-from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications,report_post, modcp_dashboard,update_report_status
+from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications,report_post, modcp_dashboard,update_report_status, modcp_reports, modcp_users, user_update
 from django.conf import settings
 from django.conf.urls.static import static
 # from core.views import PostListView
@@ -34,6 +34,12 @@ urlpatterns = [
     path('report-post/<int:post_id>/', report_post, name='report_post'),
     path('modcp/', modcp_dashboard, name='modcp_dashboard'), 
     path('modcp/update_report_status/<int:report_id>/', update_report_status, name='update_report_status'),
+    path('modcp/reports/', modcp_reports, name='modcp_reports'), 
+    path('modcp/users/', modcp_users, name='modcp_users'), 
+    path('modcp/users/user/<int:user_id>/update/', user_update, name='user_update'), 
+
+
+    
 
 
 

@@ -1,0 +1,79 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users List </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    {% tailwind_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+  </head>
+
+  <body class="container">
+    <!-- Sidebar -->
+    <div class="menu">{% include 'components/sidebar.html' %}</div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="home_container">
+        {% include 'components/navbar.html' %}
+
+        <h1 class="text-2xl font-bold mb-4">Users List</h1>
+
+        <div class="overflow-x-auto">
+          <table class="table w-full">
+              <!-- head -->
+              <thead>
+                  <tr>
+                      
+                      <th class="px-4 py-2">Name</th>
+                      <th class="px-4 py-2"></th>
+                      <th class="px-4 py-2"></th>
+                      <th class="px-4 py-2"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for user in users %}
+                  <tr>
+                    
+                      <td class="px-4 py-2">
+                          <div class="flex items-center gap-3">
+                              <div class="avatar">
+                                  <div class="mask mask-squircle w-12 h-12">
+                                      <img src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png" alt="Student" />
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="font-bold">{{ user.username }}</div>
+                                  <div class="text-sm opacity-50">{{ user.email }}</div>
+                              </div>
+                          </div>
+                      </td>
+                      <td class="px-4 py-2">
+                          <!-- Add user job here -->
+                      </td>
+                      <td class="px-4 py-2">
+                          <!-- Add user favorite color here -->
+                      </td>
+                      <td class="px-4 py-2">
+                          <button class="btn btn-ghost btn-xs">Update</button>
+                          <a href="{% url 'user_update' user.id %}" class="btn btn-primary">Update</a>
+
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  <!-- End of loop -->
+              </tbody>
+              
+          </table>
+      </div>
+      </div>
+    </div>
+  </body>
+</html>

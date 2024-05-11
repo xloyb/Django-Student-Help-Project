@@ -1654,6 +1654,15 @@ html {
   text-decoration-line: underline;
 }
 
+.mask {
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -2315,6 +2324,11 @@ html {
 .link:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
+}
+
+.mask-squircle {
+  -webkit-mask-image: url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M100 0C20 0 0 20 0 100s20 100 100 100 100-20 100-100S180 0 100 0Z'/%3e%3c/svg%3e");
+          mask-image: url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M100 0C20 0 0 20 0 100s20 100 100 100 100-20 100-100S180 0 100 0Z'/%3e%3c/svg%3e");
 }
 
 :where(.menu li:empty) {
@@ -3250,6 +3264,10 @@ html:has(.drawer-toggle:checked) {
   width: 100%;
 }
 
+.w-12 {
+  width: 3rem;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -3301,6 +3319,10 @@ html:has(.drawer-toggle:checked) {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -3591,6 +3613,10 @@ html:has(.drawer-toggle:checked) {
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .shadow {

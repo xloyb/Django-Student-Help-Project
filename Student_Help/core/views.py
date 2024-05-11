@@ -31,19 +31,45 @@ from django.urls import reverse
 import json
 
 
+def user_update(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('modcp_users')  
+    else:
+        form = UserRegisterForm(instance=user)
+    
+    return render(request, 'modcp/update_user.html', {'form': form, 'user': user})
+
+
 def update_report_status(request, report_id):
     report = Report.objects.get(id=report_id)
     if request.method == 'POST':
         form = ReportStatusForm(request.POST, instance=report)
         if form.is_valid():
             form.save()
-            return redirect('modcp_dashboard')
-    
+            return redirect('modcp_reports')
+
+def modcp_reports(request):
+    reports = Report.objects.all()  
+    form = ReportStatusForm()  
+    return render(request, 'modcp/reports.html', {'reports': reports, 'form': form})
+
 def modcp_dashboard(request):
     users = User.objects.all()  
     reports = Report.objects.all()  
     form = ReportStatusForm()  
     return render(request, 'modcp/dashboard.html', {'users': users, 'reports': reports, 'form': form})
+
+
+def modcp_users(request):
+    users = User.objects.all()  
+    form = UserRegisterForm()  
+    return render(request, 'modcp/users.html', {'users': users, 'form': form})
+
 
 def report_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
