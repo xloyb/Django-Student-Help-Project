@@ -22,8 +22,7 @@
   <div class="content">
     <div class="home_container">
       {% include 'components/navbar.html' %}
-
-      <h1 class="text-2xl font-bold mb-4">Main Content Area</h1>
+<div class="content_container">
 
       <div class="flex justify-end sm:justify-start md:justify-center lg:justify-end mr-8">
         <div class="w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-xs">
@@ -73,7 +72,10 @@
                   {% endif %}
                 </li>
                 <li>
+                  {% if request.user == post.creator %}
+
                   <a href="{% url 'post_update' pk=post.pk %}" class="">Edit</a>
+                  {% endif %}
 
                 </li>
                 <li>
@@ -161,6 +163,8 @@
       </div>
 
       {% endfor %}
+    </div>
+
     </div>
   </div>
   <script>

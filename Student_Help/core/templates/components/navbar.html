@@ -7,7 +7,9 @@
       </label>
       <a class="btn btn-ghost text-xl" href="{% url 'dashboard' %}">MyStudent</a>
     </div>
-    <a class="btn btn-neutral mx-1" href="{% url 'home' %}">Home</a>
+    <a class="btn btn-primary mx-1 mr-3" href="{% url 'home' %}">Home</a>
+    <a class="btn btn-primary mx-1" href="{% url 'dashboard' %}">Dashboard</a>
+
 
     {% if user.is_authenticated %}             
     <div class="flex-none">

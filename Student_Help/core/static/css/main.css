@@ -16,5 +16,12 @@
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
+    
+  }
+
+  .content_container {
+    margin-left: 2rem;
+    margin-right: 2rem;
+
   }
 

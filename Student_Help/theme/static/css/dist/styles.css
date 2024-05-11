@@ -3278,6 +3278,11 @@ html:has(.drawer-toggle:checked) {
   cursor: pointer;
 }
 
+.break-before-right {
+  -moz-column-break-before: right;
+       break-before: right;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -3329,6 +3334,11 @@ html:has(.drawer-toggle:checked) {
 
 .overflow-x-auto {
   overflow-x: auto;
+}
+
+.break-normal {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .rounded {
