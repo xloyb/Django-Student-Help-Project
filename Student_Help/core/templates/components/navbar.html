@@ -25,9 +25,13 @@
             <div id="notifications-container">
               
             </div>
-            <div class="card-actions">
-              <button class="btn btn-primary btn-block">Mark as Read</button>
-            </div>
+           
+            <form method="post" action="{% url 'mark_all_notifications_as_read' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">
+                  Mark All Notifications as Read
+              </button>
+          </form>
           </div>
         </div>
       </div>

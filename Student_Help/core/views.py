@@ -35,6 +35,16 @@ import json
 from .decorators import staff_required
 
 
+def mark_all_notifications_as_read(request):
+    if request.user.is_authenticated:
+        Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        #messages.success(f'Hi  your account was created successfully')
+        messages.success(request, f'Your Notfifications has been marked as read.')
+        return redirect('dashboard')
+
+    else:
+        return JsonResponse({'error': 'User not authenticated'})
+
 @staff_required
 def user_update(request, user_id):
     user = get_object_or_404(User, pk=user_id)
@@ -110,7 +120,7 @@ def report_post(request, post_id):
     
 def fetch_notifications(request):
     if request.user.is_authenticated:
-        notifications = Notification.objects.filter(user=request.user)
+        notifications = Notification.objects.filter(user=request.user,is_read=False)
         notifications_data = [{'message': notification.message, 'link': notification.link} for notification in notifications]
         return JsonResponse({'notifications': notifications_data})
     else:
@@ -511,7 +521,6 @@ def  profile(request):
 
 def register(request):
     site_settings = SiteSettings.objects.first()
-    print(site_settings)
     if site_settings and getattr(site_settings, 'registration_open', True):
         if request.method == "POST":
             form = UserRegisterForm(request.POST)
