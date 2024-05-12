@@ -105,3 +105,10 @@ class Report(models.Model):
 
     def __str__(self):
         return f"{self.reporter.username} reported {self.post.title} for {self.reason}"
+
+class SiteSettings(models.Model):
+    site_name = models.CharField(max_length=100, default="Student Help by MyDevify.com")
+    registration_open = models.BooleanField(default=True)  
+
+    def __str__(self):
+        return self.site_name
