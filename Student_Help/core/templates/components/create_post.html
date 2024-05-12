@@ -44,7 +44,7 @@
                 <button type="submit">Select</button>
             </form>
 
-            <form method="post" novalidate>
+            <form method="post" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 {{ form.management_form }}
                 {{ form.as_p }}

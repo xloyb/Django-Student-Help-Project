@@ -38,7 +38,6 @@ from .decorators import staff_required
 def mark_all_notifications_as_read(request):
     if request.user.is_authenticated:
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
-        #messages.success(f'Hi  your account was created successfully')
         messages.success(request, f'Your Notfifications has been marked as read.')
         return redirect('dashboard')
 
@@ -114,6 +113,7 @@ def report_post(request, post_id):
             report.post = post
             report.reporter = request.user
             report.save()
+            messages.success(request, f'Your Report has been Sent successfully.')
             return redirect('dashboard')
 
 
@@ -182,7 +182,7 @@ def create_comment(request, post_id):
             commenter = request.user
             message = f"{commenter.username} commented on your post: {comment.content}"
             create_notification_for_comment(post, commenter, message,cid)
-            
+            messages.success(request, f'Your comment has been added successfully.')
             return redirect('dashboard')
 
 def create_notification_for_Like(post, commenter, message):
@@ -407,31 +407,30 @@ def get_liked_status(request, post_id):
 
 
 def create_post(request):
-    form_type = request.GET.get('type')  # Get the selected form type from the URL parameter
+    form_type = request.GET.get('type')  
 
     if request.method == 'POST':
-        # Use form_type to determine which form to initialize
         if form_type == 'logement':
-            form = LogementForm(request.POST)
+            form = LogementForm(request.POST, request.FILES)
         elif form_type == 'transport':
-            form = TransportForm(request.POST)
+            form = TransportForm(request.POST, request.FILES)
         elif form_type == 'stage':
-            form = StageForm(request.POST)
+            form = StageForm(request.POST, request.FILES)
         elif form_type == 'evenement':
-            form = EvenementForm(request.POST)
+            form = EvenementForm(request.POST, request.FILES)
         elif form_type == 'recommandation':
-            form = RecommandationForm(request.POST)
+            form = RecommandationForm(request.POST, request.FILES)
         else:
             return render(request, 'components/create_post.html', {'error': 'Invalid form type'})
 
         if form.is_valid():
-            # Save the form data to the database
             post = form.save(commit=False)
             post.creator = request.user
             post.save()
 
             # Additional logic for specific post types (optional)
             # ...
+            messages.success(request, f'Your post has been created successfully.')
             return redirect('dashboard')
         else:
             return render(request, 'components/create_post.html', {'form': form})
