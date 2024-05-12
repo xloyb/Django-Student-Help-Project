@@ -15,6 +15,8 @@ from django.views.generic import ListView,DeleteView,UpdateView,DetailView,View
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
+
 
 
 from django.http import JsonResponse
@@ -508,17 +510,22 @@ def  profile(request):
     return render (request, 'pages/profile.html')
 
 def register(request):
-    if request.method == "POST":
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Hi {username}, your account was created successfully')
-            return redirect('dashboard')
-    else:
-        form = UserRegisterForm()
+    site_settings = SiteSettings.objects.first()
+    print(site_settings)
+    if site_settings and getattr(site_settings, 'registration_open', True):
+        if request.method == "POST":
+            form = UserRegisterForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                messages.success(request, f'Hi {username}, your account was created successfully')
+                return redirect('dashboard')
+        else:
+            form = UserRegisterForm()
 
-    return render(request, 'registration/register.html', {'form': form})
+        return render(request, 'registration/register.html', {'form': form})
+    else:
+        return HttpResponseForbidden("You are not authorized to access this page, Registration has been temporary Disabled.");
 
 def  login(request):
     return render (request, 'registration/login.html')
