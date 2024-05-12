@@ -4,7 +4,7 @@ from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report,User
+from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report, User, SiteSettings
 
 from django.shortcuts import render, redirect
 from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm, ReportStatusForm
@@ -66,8 +66,21 @@ def modcp_reports(request):
 def modcp_dashboard(request):
     users = User.objects.all()  
     reports = Report.objects.all()  
-    form = ReportStatusForm()  
-    return render(request, 'modcp/dashboard.html', {'users': users, 'reports': reports, 'form': form})
+
+    site_settings = SiteSettings.objects.first()
+
+    if request.method == 'POST':
+        site_settings.registration_open = not site_settings.registration_open
+        site_settings.save()
+        return redirect('modcp_dashboard') 
+
+    context = {
+        'users': users,
+        'reports': reports,
+        'site_settings': site_settings,
+    }
+    return render(request, 'modcp/dashboard.html', context)
+
 
 @staff_required
 def modcp_users(request):

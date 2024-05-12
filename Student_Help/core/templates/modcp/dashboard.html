@@ -24,6 +24,25 @@
       <div class="home_container">
         {% include 'components/navbar.html' %}
 
+        
+<div class="home_container">
+  <section class="mb-20 border-solid border-2 border-slate-700 rounded-2xl">
+    <div class="flex-1">
+      <span class="btn btn-ghost text-xl" >Enable / Disable Registration</span>
+    </div>
+      <div class="h-28 flex items-center justify-center">
+        <form method="post" class="flex items-center space-x-4">
+          {% csrf_token %}
+          <label class="toggle toggle-success">
+            <input type="checkbox" name="registration_open" class="toggle" {% if site_settings.registration_open %} checked {% endif %}>
+          </label>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+  </section>
+</div>
+
+
         <h1 class="text-2xl font-bold mb-4">Reports List</h1>
 
         <div class="overflow-x-auto">
