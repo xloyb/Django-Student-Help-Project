@@ -62,3 +62,35 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement; // Get the <html> element
+
+    const isDarkTheme = localStorage.getItem('theme') === 'dark';
+
+    if (isDarkTheme) {
+        htmlElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark');
+    } else {
+        htmlElement.setAttribute('data-theme', 'light');
+        document.body.classList.remove('dark');
+    }
+
+    themeToggle.checked = isDarkTheme;
+
+    themeToggle.addEventListener('change', function() {
+        if (this.checked) {
+            htmlElement.setAttribute('data-theme', 'dark');
+            document.body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            htmlElement.setAttribute('data-theme', 'light');
+            document.body.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+});
+
+</script>
