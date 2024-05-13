@@ -22,153 +22,153 @@
   <div class="content">
     <div class="home_container">
       {% include 'components/navbar.html' %}
-<div class="content_container">
+      <div class="content_container">
 
-  
 
-      <div class="flex justify-end sm:justify-start md:justify-center lg:justify-end mr-8">
-        <div class="w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-xs">
-          <select id="postFilter" class="select select-success w-full">
-            <option disabled selected>Filter Posts</option>
-            <option value="all">All</option>
-            <option value="recommandation">Recommandation</option>
-            <option value="evenement">Evenement</option>
-            <option value="logement">Logement</option>
-            <option value="stage">Stage</option>
-          </select>
-        </div>
-      </div>
-      {% for post in posts %}
-      <dialog id="my_modal_{{post.pk}}" class="modal">
-        <div class="modal-box">
-          <h3 class="font-bold text-lg">Report {{post.creator.username}}'s Post</h3>
-          <div class="modal-action">
-            <form method="post" action="{% url 'report_post' post_id=post.id %}">
-              {% csrf_token %}
-              {{ report_form.as_p }}
-              <button type="submit">Submit Report</button>
-          </form>
-          
-            
-            <form method="dialog">
-              <button class="btn">Close</button>
-            </form>
+
+        <div class="flex justify-end sm:justify-start md:justify-center lg:justify-end mr-8">
+          <div class="w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-xs">
+            <select id="postFilter" class="select select-success w-full">
+              <option disabled selected>Filter Posts</option>
+              <option value="all">All</option>
+              <option value="recommandation">Recommandation</option>
+              <option value="evenement">Evenement</option>
+              <option value="logement">Logement</option>
+              <option value="stage">Stage</option>
+            </select>
           </div>
         </div>
-      </dialog>
-      <div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10"
-        id="{% if post.recommandation %}recommandation{% elif post.evenement %}evenement{% elif post.stage %}stage{% elif post.transport %}transport{% elif post.logement %}logement{% endif %}">
-        <div class="card-body">
-          <div class="absolute top-4 right-4 h-12 w-24 px-4 py-2 rounded-lg">
-            <div class="dropdown dropdown-left">
-              <div tabindex="0" role="button" class="btn m-1">
-                <i class="fas fa-ellipsis-v"></i>
-              </div>
-              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li>
-                  {% if request.user == post.creator %}
-                  <form action="{% url 'post_delete' post.pk %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="">Delete Post</button>
-                  </form>
-                  {% endif %}
-                </li>
-                <li>
-                  {% if request.user == post.creator %}
+        {% for post in posts %}
+        <dialog id="my_modal_{{post.pk}}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg">Report {{post.creator.username}}'s Post</h3>
+            <div class="modal-action">
+              <form method="post" action="{% url 'report_post' post_id=post.id %}">
+                {% csrf_token %}
+                {{ report_form.as_p }}
+                <button type="submit">Submit Report</button>
+              </form>
 
-                  <a href="{% url 'post_update' pk=post.pk %}" class="">Edit</a>
-                  {% endif %}
 
-                </li>
-                <li>
-                  <button onclick="document.getElementById('my_modal_{{post.pk}}').showModal()">Report</button>
-                </li>
-              </ul>
+              <form method="dialog">
+                <button class="btn">Close</button>
+              </form>
             </div>
           </div>
-          <a href="#" style="text-decoration: none; color: inherit">
-            <div class="flex items-center space-x-4">
-              <div class="w-10 mb-3 avatar">
-                <img alt="" class="rounded-full" src="https://www.mydevify.com/assets/index.494ac568.png" />
-              </div>
-              <span class="card-title">{{ post.creator.username }}</span>
-              <span>{{post.id}}</span>
+        </dialog>
+        <div class="relative space-x-4 card w-auto bg-base-100 shadow-xl mb-10"
+          id="{% if post.recommandation %}recommandation{% elif post.evenement %}evenement{% elif post.stage %}stage{% elif post.transport %}transport{% elif post.logement %}logement{% endif %}">
+          <div class="card-body">
+            <div class="absolute top-4 right-4 h-12 w-24 px-4 py-2 rounded-lg">
+              <div class="dropdown dropdown-left">
+                <div tabindex="0" role="button" class="btn m-1">
+                  <i class="fas fa-ellipsis-v"></i>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                  <li>
+                    {% if request.user == post.creator %}
+                    <form action="{% url 'post_delete' post.pk %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="">Delete Post</button>
+                    </form>
+                    {% endif %}
+                  </li>
+                  <li>
+                    {% if request.user == post.creator %}
 
-              <div class="badge badge-secondary">
-                {{ post.get_type_display }}
+                    <a href="{% url 'post_update' pk=post.pk %}" class="">Edit</a>
+                    {% endif %}
+
+                  </li>
+                  <li>
+                    <button onclick="document.getElementById('my_modal_{{post.pk}}').showModal()">Report</button>
+                  </li>
+                </ul>
               </div>
-              <p class="text-gray-700 mb-2">
-                Posted {{ post.created_at|timesince }} ago
-              </p>
             </div>
-          </a>
+            <a href="#" style="text-decoration: none; color: inherit">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 mb-3 avatar">
+                  <img alt="" class="rounded-full" src="https://www.mydevify.com/assets/index.494ac568.png" />
+                </div>
+                <span class="card-title">{{ post.creator.username }}</span>
 
-          {% if post.image %}
-          <figure class="relative">
-            <img src="{{ post.image.url }}" alt="Post Image" />
-          </figure>
-          {% endif %}
-          <h2 class="text-xl font-bold mb-2">{{ post.title }}</h2>
-          {% if post.description %}
-          <p class="mb-2 text-base">{{ post.description }}</p>
-          {% endif %} {% if post.logement %}
-          <p>Type: Logement</p>
-          <p>Location: {{ post.logement.location }}</p>
-          {% endif %} {% if post.transport %}
-          <p>Type: Transport</p>
-          <p>Departure: {{ post.transport.departure }}</p>
-          <p>Destination: {{ post.transport.destination }}</p>
-          <p>Departure Time: {{ post.transport.departureTime }}</p>
-          {% endif %} {% if post.stage %}
-          <p>Type: Stage</p>
-          <p>
-            Type of Internship: {{ post.stage.get_typeInternship_display }}
-          </p>
-          <p>Company: {{ post.stage.company }}</p>
-          <p>Duration: {{ post.stage.duration }} months</p>
-          <p>Subject: {{ post.stage.subject }}</p>
-          {% endif %} {% if post.evenement %}
-          <p>Type: Evenement</p>
-          <p>Event Type: {{ post.evenement.get_eventType_display }}</p>
-          <p>Date: {{ post.evenement.date }}</p>
-          {% if post.evenement.club %}
-          <p>Organizing Club: {{ post.evenement.club }}</p>
-          {% endif %} {% if post.evenement.price %}
-          <p>Ticket Price: {{ post.evenement.price }}</p>
-          {% endif %} {% if post.evenement.domain %}
-          <p>Subject Area: {{ post.evenement.domain }}</p>
-          {% endif %} {% endif %} {% if post.recommandation %}
-          <p>Type: Recommandation</p>
-          <p>Recommendation: {{ post.recommandation.text }}</p>
-          {% endif %}
+                <div class="badge badge-secondary">
+                  {{ post.get_type_display }}
+                </div>
+                <p class="text-gray-700 mb-2">
+                  Posted {{ post.created_at|timesince }} ago
+                </p>
+              </div>
+            </a>
 
-          <div class="mt-4 flex items-center space-x-2">
-            <button class="like-btn {% if post.id in liked_post_ids %}text-red-500{% endif %}" data-post-id="{{ post.id }}">
-              <i class="far fa-heart"></i> Like
-          </button>
+            {% if post.image %}
+            <figure class="relative">
+              <img src="{{ post.image.url }}" alt="Post Image" />
+            </figure>
+            {% endif %}
+            <h2 class="text-xl font-bold mb-2">{{ post.title }}</h2>
+            {% if post.description %}
+            <p class="mb-2 text-base">{{ post.description }}</p>
+            {% endif %} {% if post.logement %}
+            <p>Type: Logement</p>
+            <p>Location: {{ post.logement.location }}</p>
+            {% endif %} {% if post.transport %}
+            <p>Type: Transport</p>
+            <p>Departure: {{ post.transport.departure }}</p>
+            <p>Destination: {{ post.transport.destination }}</p>
+            <p>Departure Time: {{ post.transport.departureTime }}</p>
+            {% endif %} {% if post.stage %}
+            <p>Type: Stage</p>
+            <p>
+              Type of Internship: {{ post.stage.get_typeInternship_display }}
+            </p>
+            <p>Company: {{ post.stage.company }}</p>
+            <p>Duration: {{ post.stage.duration }} months</p>
+            <p>Subject: {{ post.stage.subject }}</p>
+            {% endif %} {% if post.evenement %}
+            <p>Type: Evenement</p>
+            <p>Event Type: {{ post.evenement.get_eventType_display }}</p>
+            <p>Date: {{ post.evenement.date }}</p>
+            {% if post.evenement.club %}
+            <p>Organizing Club: {{ post.evenement.club }}</p>
+            {% endif %} {% if post.evenement.price %}
+            <p>Ticket Price: {{ post.evenement.price }}</p>
+            {% endif %} {% if post.evenement.domain %}
+            <p>Subject Area: {{ post.evenement.domain }}</p>
+            {% endif %} {% endif %} {% if post.recommandation %}
+            <p>Type: Recommandation</p>
+            <p>Recommendation: {{ post.recommandation.text }}</p>
+            {% endif %}
 
-            
-            <span class="like-count" data-post="{{ post.pk }}"></span>
-            <i class="fas fa-comment text-blue-500 cursor-pointer" onclick="toggleCollapse('{{ post.id }}')"></i>
-            <i class="fas fa-share text-indigo-500"></i>
+            <div class="mt-4 flex items-center space-x-2">
+              <button class="like-btn {% if post.id in liked_post_ids %}text-red-500{% endif %}"
+                data-post-id="{{ post.id }}">
+                <i class="far fa-heart"></i> Like
+              </button>
+
+
+              <span class="like-count" data-post="{{ post.pk }}"></span>
+              <i class="fas fa-comment text-blue-500 cursor-pointer" onclick="toggleCollapse('{{ post.id }}')"></i>
+              <i class="fas fa-share text-indigo-500"></i>
+            </div>
+
           </div>
+          <div>
 
-        </div>
-        <div>
+            <div id="CommentsSection-{{ post.id }}" style="display: none;">
+              {% include 'components/comment.html' %}
+            </div>
 
-          <div id="CommentsSection-{{ post.id }}" style="display: none;">
-            {% include 'components/comment.html' %}
+
           </div>
-          
-          
         </div>
+
+        {% endfor %}
       </div>
 
-      {% endfor %}
     </div>
 
-    </div>
-    
   </div>
   <script>
     document
@@ -197,28 +197,28 @@
         }
       });
   </script>
-  
+
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Function to get CSRF token from cookie
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
+    document.addEventListener('DOMContentLoaded', function () {
+      // Function to get CSRF token from cookie
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
           }
         }
+        return cookieValue;
       }
-      return cookieValue;
-    }
 
-    // Fetch liked status for each post
-    const postIds = Array.from(document.querySelectorAll('.like-btn')).map(btn => btn.dataset.postId);
-    fetch('/get-liked-status/', {
+      // Fetch liked status for each post
+      const postIds = Array.from(document.querySelectorAll('.like-btn')).map(btn => btn.dataset.postId);
+      fetch('/get-liked-status/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -226,117 +226,117 @@
         },
         body: JSON.stringify({ post_ids: postIds }),
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          const likedPostIds = data.liked_post_ids;
-          likedPostIds.forEach(postId => {
-            const likeBtn = document.querySelector(`.like-btn[data-post-id="${postId}"]`);
-            if (likeBtn) {
-              likeBtn.classList.add('text-red-500');
-            }
-          });
-        } else {
-          console.error('Failed to fetch liked status');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const likedPostIds = data.liked_post_ids;
+            likedPostIds.forEach(postId => {
+              const likeBtn = document.querySelector(`.like-btn[data-post-id="${postId}"]`);
+              if (likeBtn) {
+                likeBtn.classList.add('text-red-500');
+              }
+            });
+          } else {
+            console.error('Failed to fetch liked status');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
 
-    // Event listener for like buttons
-    const likeButtons = document.querySelectorAll('.like-btn');
-    likeButtons.forEach(btn => {
+      // Event listener for like buttons
+      const likeButtons = document.querySelectorAll('.like-btn');
+      likeButtons.forEach(btn => {
         const postId = btn.dataset.postId;
         fetch(`/get-liked-status/${postId}/`, { method: 'GET' })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    if (data.is_liked) {
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              if (data.is_liked) {
+                btn.classList.add('text-red-500');
+              }
+              btn.addEventListener('click', function () {
+                const postId = this.dataset.postId;
+                fetch('/like/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                  },
+                  body: `post_id=${postId}`,
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.success) {
+                      if (data.action === 'liked') {
                         btn.classList.add('text-red-500');
+                        console.log('Post liked');
+                      } else if (data.action === 'unliked') {
+                        btn.classList.remove('text-red-500');
+                        console.log('Post unliked');
+                      }
+                    } else {
+                      console.error('Failed to like/unlike post');
                     }
-                    btn.addEventListener('click', function() {
-                        const postId = this.dataset.postId;
-                        fetch('/like/', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'X-CSRFToken': getCookie('csrftoken'),
-                            },
-                            body: `post_id=${postId}`,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                if (data.action === 'liked') {
-                                    btn.classList.add('text-red-500'); 
-                                    console.log('Post liked');
-                                } else if (data.action === 'unliked') {
-                                    btn.classList.remove('text-red-500'); 
-                                    console.log('Post unliked');
-                                }
-                            } else {
-                                console.error('Failed to like/unlike post');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                    });
-                } else {
-                    console.error('Failed to fetch liked status:', data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching liked status:', error);
-            });
-    });
-      });
-</script>
-<script>
-  function toggleCollapse(id) {
-    var content = document.getElementById("CommentsSection-"+id);
-    if (content.style.display === "none") {
-      content.style.display = "block";
-    } else {
-      content.style.display = "none";
-    }
-  }
-</script>
-
-<script>
-  function submitReport(postId) {
-    // Get form data
-    var reason = document.getElementById('reason').value;
-    var description = document.getElementById('description').value;
-
-    // Make AJAX request to submit the report
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/report-post/' + postId + '/', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Report successfully submitted
-                alert('Post reported successfully. Thank you for your feedback!');
-                closeReportModal(postId); // Close the modal
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                  });
+              });
             } else {
-                // Error occurred while submitting report
-                alert('Failed to report the post. Please try again.');
+              console.error('Failed to fetch liked status:', data.error);
             }
-        }
-    };
+          })
+          .catch(error => {
+            console.error('Error fetching liked status:', error);
+          });
+      });
+    });
+  </script>
+  <script>
+    function toggleCollapse(id) {
+      var content = document.getElementById("CommentsSection-" + id);
+      if (content.style.display === "none") {
+        content.style.display = "block";
+      } else {
+        content.style.display = "none";
+      }
+    }
+  </script>
 
-    var data = JSON.stringify({
+  <script>
+    function submitReport(postId) {
+      // Get form data
+      var reason = document.getElementById('reason').value;
+      var description = document.getElementById('description').value;
+
+      // Make AJAX request to submit the report
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/report-post/' + postId + '/', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Report successfully submitted
+            alert('Post reported successfully. Thank you for your feedback!');
+            closeReportModal(postId); // Close the modal
+          } else {
+            // Error occurred while submitting report
+            alert('Failed to report the post. Please try again.');
+          }
+        }
+      };
+
+      var data = JSON.stringify({
         reason: reason,
         description: description
-    });
-    xhr.send(data);
-}
+      });
+      xhr.send(data);
+    }
 
-</script>
+  </script>
 
 
 </body>
