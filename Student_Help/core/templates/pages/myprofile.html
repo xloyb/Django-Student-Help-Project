@@ -65,16 +65,13 @@
                   </ul>
                 </div>
                 <div class="navbar-end">
-                  <button class="btn btn-primary" disabled>Add Friend</button>
+                  <button class="btn btn-primary"><a href="/settings/update">Edit Profile</a></button>
                 </div>
               </div>
 
               <!-- Profile Content -->
               <div class="mt-4">
-                <h2 class="text-xl font-bold">{{ profile_user.username }}</h2>
-                <p class="mt-2"><strong>Joined:</strong> {{ joined_date|date:"F d, Y" }}</p>
-                <p class="mt-2"><strong>Last seen:</strong> {{ last_seen|date:"F d, Y H:i" }}</p>
-              
+                <h2 class="text-xl font-bold">{{ user.username }}</h2>
                 <p class="mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
             </div>
