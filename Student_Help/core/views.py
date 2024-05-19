@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post,Logement, Transport, Stage, Evenement, Recommandation, Commentaire, Like,Notification, Report, User, SiteSettings
 
 from django.shortcuts import render, redirect
-from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm, ReportStatusForm
+from .forms import LogementForm, TransportForm, StageForm, EvenementForm, RecommandationForm,CommentForm, ReportForm, ReportStatusForm, UserProfileForm
 
 
 from django.views.generic import ListView,DeleteView,UpdateView,DetailView,View
@@ -33,6 +33,22 @@ from django.urls import reverse
 import json
 
 from .decorators import staff_required
+
+
+
+
+@login_required
+def update_profile(request):
+    # Retrieve the current user from the session
+    profile_user = request.user
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=profile_user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after updating
+    else:
+        form = UserProfileForm(instance=profile_user)
+    return render(request, 'pages/update_profile.html', {'form': form, 'profile_user': profile_user})
 
 
 def mark_all_notifications_as_read(request):
@@ -514,9 +530,19 @@ def Dashboard(request):
 def  layout(request):
     return render (request, 'layout.html')
 
-
+@login_required
 def  profile(request):
-    return render (request, 'pages/profile.html')
+    return render (request, 'pages/myprofile.html')
+
+@login_required
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    context = {
+        'profile_user': user,
+        'last_login': user.last_login,
+        'joined_date': user.date_joined,
+    }
+    return render(request, 'pages/profile.html', context)
 
 def register(request):
     site_settings = SiteSettings.objects.first()

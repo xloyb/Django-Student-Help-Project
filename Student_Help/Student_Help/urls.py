@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_view
 
-from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications,report_post, modcp_dashboard,update_report_status, modcp_reports, modcp_users, user_update, mark_all_notifications_as_read
+from core.views import home,Dashboard,layout,profile,register,login,create_post,PostListView,PostDeleteView,PostUpdateView,like_post,get_liked_status, create_comment, PostWithCommentDetailView, PostDetailView, fetch_notifications,report_post, modcp_dashboard,update_report_status, modcp_reports, modcp_users, user_update, mark_all_notifications_as_read,profile_view, update_profile
 from django.conf import settings
 from django.conf.urls.static import static
 # from core.views import PostListView
@@ -38,7 +38,9 @@ urlpatterns = [
     path('modcp/users/', modcp_users, name='modcp_users'), 
     path('modcp/users/user/<int:user_id>/update/', user_update, name='user_update'),
     path('mark-all-notifications-as-read/', mark_all_notifications_as_read, name='mark_all_notifications_as_read'),
- 
+    path('profile/<str:username>/', profile_view, name='profile'),
+    path('settings/update/', update_profile, name='update_profile'),
+
 
 
     
