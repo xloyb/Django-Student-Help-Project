@@ -38,6 +38,17 @@ from .decorators import staff_required
 
 
 @login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Commentaire, id=comment_id)
+
+    if comment.author != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this comment.")
+
+    comment.delete()
+    return redirect('dashboard')
+
+
+@login_required
 def update_profile(request):
     # Retrieve the current user from the session
     profile_user = request.user

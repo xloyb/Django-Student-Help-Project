@@ -58,7 +58,7 @@
               <span class="badge">New</span>
             </a>
           </li>
-          <li><a>Settings</a></li>
+          <li><a href="{% url 'update_profile' %}">Settings</a></li>
           <li>
           <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}

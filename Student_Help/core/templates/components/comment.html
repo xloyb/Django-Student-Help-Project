@@ -57,8 +57,14 @@
               </svg>
               </div>
               <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
+                {% if comment.author == request.user %}
+            <form action="{% url 'delete_comment' comment.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <li><a><button type="submit">Delete</button></a></li>
+                
+            </form>
+        {% endif %}
+                
               </ul>
             </div>
 
